@@ -1,0 +1,55 @@
+---
+import Brand from '../components/Brand.astro';
+import { site } from '../data/site';
+import '../styles/global.css';
+interface Props { title?: string; description?: string; home?: boolean; }
+const { title = 'Dimension — Beyond the ordinary.', description = site.description, home = false } = Astro.props;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#111214" />
+    <meta name="description" content={description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="/images/fpv-landscape.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;650;700;750;800;900&family=DM+Mono:wght@400;500&family=Inter:wght@400;450;500;600&display=swap" rel="stylesheet" />
+    <title>{title}</title>
+  </head>
+  <body data-home={home}>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header">
+      <Brand />
+      <nav class="desktop-nav" aria-label="Main navigation">
+        <a href={home ? '#work' : '/#work'}>Work</a>
+        <a href={home ? '#fpv' : '/#fpv'}>FPV cinematics <span class="nav-dot"></span></a>
+        <a href={home ? '#services' : '/#services'}>Services</a>
+        <a href={home ? '#about' : '/#about'}>About</a>
+      </nav>
+      <a class="header-contact" href={`mailto:${site.email}`}>Let’s talk <span>↗</span></a>
+      <button class="menu-toggle" aria-label="Open menu" aria-controls="mobile-menu" aria-expanded="false"><span></span><span></span></button>
+    </header>
+    <nav id="mobile-menu" class="mobile-menu" aria-label="Mobile navigation" hidden>
+      <a href="/#work">Selected work <span>01</span></a>
+      <a href="/#fpv">FPV cinematics <span>02</span></a>
+      <a href="/#services">What we do <span>03</span></a>
+      <a href="/#about">About Dimension <span>04</span></a>
+      <a href="/#contact">Get in touch <span>05</span></a>
+    </nav>
+    <main id="main"><slot /></main>
+    <footer class="footer">
+      <div class="footer-main"><Brand /><p>Independent minds.<br />Another dimension.</p><a href="#main" class="back-top">Back to top ↑</a></div>
+      <div class="footer-bottom"><span>© {new Date().getFullYear()} Dimension</span><span>Creative company · India / Everywhere</span><span class="creator">Created by Saubhagya</span></div>
+    </footer>
+    <div class="page-progress" aria-hidden="true"><span class="progress-track"></span><span class="progress-marker"><b>000</b>%</span><span class="ruler-number r0">0</span><span class="ruler-number r25">25</span><span class="ruler-number r50">50</span><span class="ruler-number r75">75</span><span class="ruler-number r100">100</span></div>
+    {home && <nav class="section-compass" aria-label="Section navigation"><a href="#intro" data-compass="intro" class="is-current">Dimension</a><a href="#work" data-compass="work">Selected work</a><a href="#fpv" data-compass="fpv">In flight</a><a href="#services" data-compass="services">The craft</a><a href="#about" data-compass="about">Our approach</a><a href="#contact" data-compass="contact">Let’s talk</a></nav>}
+    <script src="../scripts/site.ts"></script>
+  </body>
+</html>

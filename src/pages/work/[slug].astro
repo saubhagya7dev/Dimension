@@ -1,0 +1,13 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Artwork from '../../components/Artwork.astro';
+import { projects } from '../../data/projects';
+import { site } from '../../data/site';
+export function getStaticPaths() { return projects.map(project => ({ params: { slug: project.slug }, props: { project } })); }
+const { project } = Astro.props;
+const next = projects[(projects.findIndex(p => p.slug === project.slug) + 1) % projects.length];
+---
+<Layout title={`${project.title} — Dimension`} description={project.summary}>
+  <div class="project-detail"><div class="section-bar"><a href="/#work">← Back to selected work</a><span>{project.number} / {project.category}</span></div><header class="detail-heading reveal"><p class="eyebrow">{project.discipline}</p><h1>{project.title}</h1><p>{project.summary}</p></header><button class="detail-art-button" data-open-art aria-label={`Enlarge ${project.title}`}><Artwork project={project}/><span class="detail-enlarge">Explore full artwork ↗</span></button><div class="detail-description"><div><p class="eyebrow">The direction</p><h2>A closer look.</h2></div><div><p>{project.direction}</p><ul>{project.deliverables.map(d => <li>{d}</li>)}</ul>{!project.image && <p class="detail-note">Artwork shown is an AI-generated concept placeholder. It illustrates the intended portfolio presentation and is not a completed client project.</p>}</div></div><div class="detail-contact"><span>Have a similar idea?</span><a class="text-link" href={`mailto:${site.email}?subject=${encodeURIComponent(`Enquiry: ${project.discipline}`)}`}>Let’s make it happen ↗</a></div><a class="next-project" href={`/work/${next.slug}/`}><span class="eyebrow">Next perspective / {next.category}</span><span>{next.title}<b>↗</b></span></a></div>
+  <dialog class="art-dialog" aria-label="Full artwork"><form method="dialog"><button class="dialog-close" aria-label="Close artwork">Close ✕</button></form><Artwork project={project}/><p>{project.title} {!project.image && ' / AI concept preview'}</p></dialog>
+</Layout>
