@@ -6,7 +6,7 @@ import { site } from '../data/site';
 const services = [
   { number: '01', icon: '◫', title: 'Graphic design.', text: 'A distinct visual voice. From the first impression to the smallest detail.', tags: ['Posters & campaigns', 'Thumbnails', 'Social graphics', 'Visual identity'] },
   { number: '02', icon: '▷', title: 'Moving images.', text: 'Stories with rhythm. Thoughtful edits that turn footage into a feeling.', tags: ['Video editing', 'Color & finishing', 'Motion graphics', 'Content production'] },
-  { number: '03', icon: '⌁', title: 'FPV cinematics.', text: 'A different perspective. Immersive movement that takes you into the frame.', tags: ['FPV visuals', 'Cinematic sequences', 'Creative direction', 'Film finishing'] },
+  { number: '03', icon: '⌁', title: 'Content systems.', text: 'A consistent creative presence. From the first idea to the final upload.', tags: ['Social media management', 'Copywriting', 'Content planning', 'Team workflows'] },
 ];
 ---
 <Layout home>
@@ -17,14 +17,14 @@ const services = [
       <div class="hero-copy"><p class="eyebrow"><span class="tiny-cross">+</span> A creative company. An uncommon perspective.</p><h1>Visuals with<br />another<br /><em>dimension.</em></h1><p class="hero-description">We shape ideas into visuals that move you.<br class="desktop-break" /> Design, moving images & the art of flight.</p><div class="hero-actions"><a class="button button-primary" href="#work">Explore the work <span>↗</span></a><a class="text-link" href="#fpv"><span class="play-small">▷</span> Into the sky</a></div></div>
       <div class="hero-gallery" data-tilt><div class="hero-gallery-label"><span>Selected perspectives</span><span>↙ 01—04</span></div><div class="hero-art-grid">{[projects[0], projects[1], projects[2], projects[5]].map(p => <a href={`/work/${p.slug}/`} aria-label={`Explore ${p.title}`}><Artwork project={p}/><span class="hero-art-tag">{p.discipline.split(' / ')[0]} ↗</span></a>)}</div><div class="hero-gallery-bottom"><span>Different mediums. Same intent.</span><span class="signal"><i></i><i></i><i></i><i></i><i></i></span></div></div>
     </div>
-    <div class="hero-bottom"><span>Independent in thought. Intentional in craft.</span><a href="#work">Scroll to discover <span>↓</span></a><span class="hero-coordinates">28° N / 77° E <span>↗</span></span></div>
+    <div class="hero-bottom"><span>Independent in thought. Intentional in craft.</span><a href="#work">Scroll to discover <span>↓</span></a><span class="hero-coordinates">Ideas into impact <span>↗</span></span></div>
   </section>
 
   <section id="work" class="work-section tracked-section" data-section-label="Selected work">
     <div class="section-bar"><span>02 / Selected work</span><span>Experiments. Expressions. Perspectives.</span></div>
     <div class="section-intro reveal"><p class="eyebrow">The work speaks first.</p><div class="intro-row"><h2>Different forms.<br />One <em>point of view.</em></h2><p>A collection across design, imagery and digital culture. Built to make you look. Made to make you feel.</p></div></div>
     <div class="gallery-toolbar"><div class="filters" role="group" aria-label="Filter projects">{filters.map((f, i) => <button data-filter={f} aria-pressed={i === 0} class:list={['filter', {'is-active': i === 0}]}>{f}{i === 0 && <span>09</span>}</button>)}</div><span class="project-count" aria-live="polite">09 projects</span></div>
-    <div class="project-grid">{projects.map(p => <article class="project-card reveal" data-category={p.category}><a href={`/work/${p.slug}/`} class="project-image-link" aria-label={`View ${p.title}`}><Artwork project={p}/><span class="project-open">View project ↗</span><span class="concept-tag">Concept preview</span></a><div class="project-caption"><div><p class="eyebrow">{p.number} / {p.category}</p><h3><a href={`/work/${p.slug}/`}>{p.title}</a></h3></div><a class="project-arrow" href={`/work/${p.slug}/`} aria-label={`Explore ${p.title}`}>↗</a></div></article>)}</div>
+    <div class="project-grid">{projects.map(p => <article class="project-card reveal" data-category={p.category}><a href={`/work/${p.slug}/`} class="project-image-link" aria-label={`View ${p.title}`}><Artwork project={p}/><span class="project-open">View project ↗</span>{!p.image && <span class="concept-tag">Concept preview</span>}</a><div class="project-caption"><div><p class="eyebrow">{p.number} / {p.category}</p><h3><a href={`/work/${p.slug}/`}>{p.title}</a></h3></div><a class="project-arrow" href={`/work/${p.slug}/`} aria-label={`Explore ${p.title}`}>↗</a></div></article>)}</div>
     <div class="gallery-note"><span><span class="status-dot"></span> A collection in progress.</span><p>AI concept previews shown while our original work is being curated.</p><a class="text-link" href={site.notion} target="_blank" rel="noopener noreferrer">Explore the original archive ↗</a></div>
   </section>
 

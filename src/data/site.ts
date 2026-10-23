@@ -8,5 +8,5 @@ export const site = {
   // Place your final file in public/media/, then set this to '/media/fpv-showreel.mp4'.
   // null intentionally keeps the poster visible without a broken video request.
   fpvVideo: null as string | null,
-  fpvPoster: '/images/fpv-landscape.png',
+  fpvPoster: '/images/fpv-landscape.webp',
 };

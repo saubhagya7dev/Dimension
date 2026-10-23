@@ -2,7 +2,10 @@
 import { artworkPosition, type Project } from '../data/projects';
 interface Props { project: Project; class?: string; }
 const { project, class: className } = Astro.props;
+const artworkStyle = project.image
+  ? `background-image:url('${project.image}');background-size:cover;background-position:center;--art-aspect:${project.aspectRatio || '1'}`
+  : `--art-position:${artworkPosition(project.cell)}`;
 ---
-<div class:list={['artwork', className]} style={project.image ? `background-image:url('${project.image}');background-size:cover;background-position:center` : `--art-position:${artworkPosition(project.cell)}`} role="img" aria-label={`${project.title} — ${project.image ? project.category : 'AI concept placeholder for ' + project.category.toLowerCase()}`}>
+<div class:list={['artwork', className]} style={artworkStyle} role="img" aria-label={`${project.title} — ${project.image ? project.category : 'AI concept placeholder for ' + project.category.toLowerCase()}`}>
   <span class="artwork-corner" aria-hidden="true"></span>
 </div>

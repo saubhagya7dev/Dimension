@@ -10,6 +10,7 @@ export type Project = {
   direction: string;
   deliverables: string[];
   image?: string;
+  aspectRatio?: string;
 };
 
 // Replace `image` with a file in public/images/work/ when your originals are ready.
