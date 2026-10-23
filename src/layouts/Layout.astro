@@ -4,6 +4,8 @@ import { site } from '../data/site';
 import '../styles/global.css';
 interface Props { title?: string; description?: string; home?: boolean; }
 const { title = 'Dimension — Beyond the ordinary.', description = site.description, home = false } = Astro.props;
+const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefined;
+const socialImage = Astro.site ? new URL(site.fpvPoster, Astro.site).href : site.fpvPoster;
 ---
 <!doctype html>
 <html lang="en">
@@ -15,7 +17,8 @@ const { title = 'Dimension — Beyond the ordinary.', description = site.descrip
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="/images/fpv-landscape.webp" />
+    <meta property="og:image" content={socialImage} />
+    {canonical && <link rel="canonical" href={canonical} />}
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="icon" href="/brand/dimension-symbol.png" type="image/png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />

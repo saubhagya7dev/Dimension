@@ -44,6 +44,9 @@ function updateScroll() {
       link.classList.toggle('is-before', i < activeIndex);
       link.classList.toggle('is-after', i > activeIndex);
       link.classList.toggle('is-distant', i > activeIndex + 2);
+      const hidden = i < activeIndex || i > activeIndex + 2;
+      link.tabIndex = hidden ? -1 : 0;
+      link.setAttribute('aria-hidden', String(hidden));
       if (i === activeIndex) link.setAttribute('aria-current', 'location');
       else link.removeAttribute('aria-current');
     });

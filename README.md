@@ -17,6 +17,7 @@ Open the URL printed by Astro, normally `http://127.0.0.1:4321`.
 npm run check   # Astro and TypeScript diagnostics
 npm run build   # Diagnostics + production static output
 npm run preview # Preview the production build
+npm run check:links # Verify local links and assets in dist after building
 ```
 
 If Astro cannot access its telemetry configuration directory, set `ASTRO_TELEMETRY_DISABLED=1` in your terminal before running those commands.
@@ -61,7 +62,7 @@ Contact actions open an email draft. There is no form backend, tracking integrat
 
 The static site is generated in `dist/`. Build command: `npm run build`; output directory: `dist`. No server-side runtime is required.
 
-Before publishing on a final domain, add that URL as `site` in `astro.config.mjs`, and use absolute production URLs for the social preview image and canonical metadata. Publication and remote pushes are separate from local commits.
+Before publishing on a final domain, add that URL as `site` in `astro.config.mjs`. The layout then generates an absolute social preview URL and canonical metadata. Publication and remote pushes are separate from local commits.
 
 ## Asset provenance
 
