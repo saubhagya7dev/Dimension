@@ -190,6 +190,8 @@ export async function initOrbitalHero(stage: HTMLElement) {
     const staticMode = reduced.matches || width <= 600;
     stage.dataset.orbitState = contextLost ? 'fallback' : staticMode ? 'static' : 'ready';
     running = !staticMode && !contextLost && inView && !document.hidden && !manuallyPaused;
+    stage.dataset.orbitPlayback = running ? 'running' : 'paused';
+    stage.closest('.orbital-hero')?.classList.toggle('is-motion-suspended', !running);
     previousTime = 0;
     renderer.setAnimationLoop(running ? draw : null);
     if (!contextLost && !staticMode) draw(performance.now());
@@ -225,11 +227,12 @@ export async function initOrbitalHero(stage: HTMLElement) {
     syncPlayback();
   }
   const resizeObserver = new ResizeObserver(resize);
+  const headerHeight = document.querySelector('.site-header')?.getBoundingClientRect().height || 0;
   const visibilityObserver = new IntersectionObserver(entries => {
     inView = entries[0]?.isIntersecting ?? false;
     stage.closest('.orbital-hero')?.classList.toggle('is-offscreen', !inView);
     syncPlayback();
-  }, { threshold: 0 });
+  }, { threshold: 0, rootMargin: `-${headerHeight}px 0px 0px 0px` });
   resizeObserver.observe(host);
   visibilityObserver.observe(stage);
   stage.addEventListener('pointermove', pointerMove, { passive: true });

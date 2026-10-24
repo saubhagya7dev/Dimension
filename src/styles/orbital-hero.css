@@ -41,6 +41,7 @@
 .ticker-copy b{font-weight:400;color:var(--accent);font-size:12px}
 .discipline-ticker:hover .ticker-track,.orbital-hero.is-motion-paused .ticker-track{animation-play-state:paused}
 .orbital-hero.is-offscreen .ticker-track{animation-play-state:paused}
+.orbital-hero.is-motion-suspended .ticker-track{animation-play-state:paused}
 .orbital-hero:has([data-orbit-state="static"]) .ticker-track,.orbital-hero:has([data-orbit-state="fallback"]) .ticker-track{animation-play-state:paused}
 @keyframes discipline-drift{to{transform:translateX(-50%)}}
 .orbital-fallback{position:absolute;inset:0;z-index:-3;transition:opacity 1s;pointer-events:none}

@@ -24,7 +24,7 @@ If Astro cannot access its telemetry configuration directory, set `ASTRO_TELEMET
 
 ## Change the accent
 
-Edit `--accent` at the beginning of `src/styles/global.css`. Current accent: **Fusion Red, #ff5e5e**. Buttons, highlights, the progress ruler and decorative elements all use this variable.
+Edit `--accent` at the beginning of `src/styles/global.css`. The original design used **Fusion Red, #ff5e5e**; your current setting takes precedence. Buttons, highlights, the progress ruler and orbital scene all use this variable.
 
 ## Orbital landing page
 

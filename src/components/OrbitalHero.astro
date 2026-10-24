@@ -41,12 +41,20 @@ const disciplines = ['Graphic design', 'FPV cinematics', 'Moving images', 'Photo
   if (stage) {
     // Keep the content independent of the optional 3D renderer.
     // Mobile and reduced-motion visitors retain the static composition.
-    if (window.innerWidth > 600 && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      import('../scripts/orbital-hero').then(({ initOrbitalHero }) => initOrbitalHero(stage)).catch(() => {
-        stage.dataset.orbitState = 'fallback';
-      });
-    } else {
-      stage.dataset.orbitState = 'static';
+    const desktop = matchMedia('(min-width: 601px)');
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+    let loading = false;
+    function boot() {
+      if (!stage || stage.dataset.orbitInitialized || loading) return;
+      if (desktop.matches && !reduced.matches) {
+        loading = true;
+        import('../scripts/orbital-hero').then(({ initOrbitalHero }) => initOrbitalHero(stage)).catch(() => {
+          stage.dataset.orbitState = 'fallback';
+        });
+      } else stage.dataset.orbitState = 'static';
     }
+    desktop.addEventListener('change', boot);
+    reduced.addEventListener('change', boot);
+    boot();
   }
 </script>
