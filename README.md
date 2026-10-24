@@ -33,6 +33,7 @@ The opening now uses `src/components/OrbitalHero.astro`, with its own stylesheet
 - The original Dimension wordmark, headline and actions are accessible HTML above the canvas.
 - Artwork comes from `src/data/projects.ts`. Original images automatically replace the concept-sheet cells in the orbit.
 - The renderer uses shallow curved planes, three orbital paths, subtle pointer parallax, and the current `--accent` color.
+- Orbital rotation also follows scroll position: scrolling down advances the artwork and scrolling up reverses it, with a short smoothing response layered over the slower idle drift.
 - Desktop motion runs at a maximum of 30 frames per second, with device pixel ratio capped at 1.5. Rendering and background video pause when the hero leaves the viewport or the browser tab is hidden.
 - The **Pause motion** button freezes the orbit, background video and ticker together.
 - Mobile (600px and below), reduced-motion users and browsers without WebGL receive a static artwork composition. Mobile does not download the Three.js chunk or autoplay the background film.
@@ -60,7 +61,9 @@ Use one of the categories listed in `filters`, or add a category to that list. `
 2. Change `fpvVideo` in `src/data/site.ts` from `null` to `'/media/fpv-showreel.mp4'`.
 3. Optionally replace `fpvPoster` with your own poster image.
 
-The hero then uses muted, looping video behind its gradient. The FPV section gains a **Watch the film** button that opens a video dialog with controls. While the video is absent, a cinematic AI poster and a coming-soon label appear; no broken video requests are made. Reduced-motion preferences pause the hero video.
+The hero uses muted, looping video behind its gradient. The FPV section also plays the film inline beneath a dark left-to-right gradient while visible. Its existing **plus reticle** opens a borderless player with play/pause, seeking, sound and fullscreen controls. Escape, the close button or the surrounding backdrop dismiss the player; the background preview pauses while the popup is open and resumes afterward. Reduced-motion preferences and hidden/offscreen states pause automatic playback. While the video is absent, the poster and a coming-soon label remain visible.
+
+The player is defined in `src/components/FpvPlayer.astro`, styled in `src/styles/fpv-player.css`, and managed by `src/scripts/fpv-film.ts`. The top-left navigation uses only the company emblem; its live light/orbit effect is in `src/styles/brand-effects.css`. Footer branding retains the wordmark.
 
 ## Content and contact
 

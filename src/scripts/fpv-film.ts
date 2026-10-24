@@ -37,6 +37,7 @@ export function initFpvFilm() {
   const seek = dialog.querySelector<HTMLInputElement>('[data-film-seek]');
   const time = dialog.querySelector<HTMLElement>('[data-film-time]');
   const fullscreen = dialog.querySelector<HTMLButtonElement>('[data-film-fullscreen]');
+  const player = dialog.querySelector<HTMLElement>('.film-player');
 
   if (controls) { controls.hidden = false; video.controls = false; }
   function formatTime(value: number) {
@@ -54,6 +55,7 @@ export function initFpvFilm() {
       sound.setAttribute('aria-pressed', String(video!.muted));
     }
     const duration = Number.isFinite(video!.duration) ? video!.duration : 0;
+    if (video!.videoWidth && video!.videoHeight) dialog!.style.setProperty('--film-aspect', String(video!.videoWidth / video!.videoHeight));
     const position = duration ? video!.currentTime / duration * 100 : 0;
     if (seek) {
       seek.value = String(position);
@@ -73,8 +75,9 @@ export function initFpvFilm() {
   });
   fullscreen?.addEventListener('click', () => {
     if (document.fullscreenElement) void document.exitFullscreen().catch(() => {});
-    else if (dialog.requestFullscreen) void dialog.requestFullscreen().catch(() => {});
+    else if (player?.requestFullscreen) void player.requestFullscreen().catch(() => {});
   });
+  if (fullscreen && (!player?.requestFullscreen || !document.fullscreenEnabled)) fullscreen.hidden = true;
   document.addEventListener('fullscreenchange', () => {
     fullscreen?.setAttribute('aria-label', document.fullscreenElement ? 'Exit fullscreen' : 'Enter fullscreen');
   });
@@ -90,7 +93,7 @@ export function initFpvFilm() {
   });
   dialog.addEventListener('close', () => {
     video.pause();
-    if (document.fullscreenElement === dialog) void document.exitFullscreen().catch(() => {});
+    if (document.fullscreenElement && dialog.contains(document.fullscreenElement)) void document.exitFullscreen().catch(() => {});
     document.body.style.overflow = previousOverflow.value;
     trigger.focus({ preventScroll: true });
     syncBackground();
