@@ -2,6 +2,7 @@
 import Brand from '../components/Brand.astro';
 import { site } from '../data/site';
 import '../styles/global.css';
+import '../styles/brand-effects.css';
 interface Props { title?: string; description?: string; home?: boolean; }
 const { title = 'Dimension — Beyond the ordinary.', description = site.description, home = false } = Astro.props;
 const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefined;
@@ -29,7 +30,7 @@ const socialImage = Astro.site ? new URL(site.fpvPoster, Astro.site).href : site
   <body data-home={home}>
     <a class="skip-link" href="#main">Skip to content</a>
     <header class="site-header">
-      <Brand />
+      <Brand compact />
       <nav class="desktop-nav" aria-label="Main navigation">
         <a href={home ? '#work' : '/#work'}>Work</a>
         <a href={home ? '#fpv' : '/#fpv'}>FPV cinematics <span class="nav-dot"></span></a>

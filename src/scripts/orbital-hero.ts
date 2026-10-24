@@ -156,6 +156,8 @@ export async function initOrbitalHero(stage: HTMLElement) {
   let manuallyPaused = false;
   let contextLost = false;
   let running = false;
+  let scrollPhase = 0;
+  let targetScrollPhase = 0;
   const pointer = new THREE.Vector2();
   const smoothPointer = new THREE.Vector2();
   let width = 0;
@@ -165,14 +167,19 @@ export async function initOrbitalHero(stage: HTMLElement) {
     if (previousTime && time - previousTime < 1000 / 30) return;
     const delta = previousTime ? Math.min((time - previousTime) / 1000, .08) : 0;
     previousTime = time;
-    if (running) elapsed += delta;
+    if (running) {
+      elapsed += delta;
+      // Position-based rotation is reversible: scrolling back retraces the orbit.
+      // Ambient drift remains deliberately slower than the scroll contribution.
+      scrollPhase += (targetScrollPhase - scrollPhase) * (1 - Math.exp(-9 * delta));
+    }
     smoothPointer.lerp(pointer, .045);
     camera.position.x = smoothPointer.x * .35;
     camera.position.y = smoothPointer.y * .22;
     camera.lookAt(0, 0, 0);
     const horizontalScale = width < 950 ? .78 : Math.min(1.12, width / 1280);
     tiles.forEach((tile, index) => {
-      const angle = tile.phase + elapsed * tile.speed;
+      const angle = tile.phase + elapsed * tile.speed + scrollPhase * (1 + tile.lane * .06);
       const radiusX = (7.0 + tile.lane * .55) * horizontalScale;
       const radiusY = 3.30 + tile.lane * .35;
       tile.mesh.position.set(Math.cos(angle) * radiusX, Math.sin(angle) * radiusY, Math.sin(angle + tile.lane) * 1.15 - .2);
@@ -180,8 +187,10 @@ export async function initOrbitalHero(stage: HTMLElement) {
       tile.mesh.scale.setScalar(tile.scale);
       tile.mesh.material.uniforms.uOpacity.value = .55 + (tile.mesh.position.z + 1.35) / 2.5 * .35;
     });
-    rings.forEach((ring, index) => { ring.scale.x = horizontalScale; ring.rotation.z = (index - 1) * .23 + Math.sin(elapsed * .045) * .035; });
+    rings.forEach((ring, index) => { ring.scale.x = horizontalScale; ring.rotation.z = (index - 1) * .23 + Math.sin(elapsed * .045) * .035 + scrollPhase * .10; });
     ticks.scale.x = horizontalScale;
+    ticks.rotation.z = scrollPhase * .08;
+    stage.dataset.orbitScrollPhase = scrollPhase.toFixed(4);
     renderer.render(scene, camera);
   }
 
@@ -207,7 +216,15 @@ export async function initOrbitalHero(stage: HTMLElement) {
     camera.aspect = bounds.width / Math.max(1, bounds.height);
     camera.updateProjectionMatrix();
     renderer.setSize(bounds.width, bounds.height, false);
+    updateScrollPhase();
     syncPlayback();
+  }
+  function updateScrollPhase() {
+    const section = stage.closest<HTMLElement>('.tracked-section');
+    const sectionTop = (section?.getBoundingClientRect().top || 0) + window.scrollY;
+    const header = document.querySelector('.site-header')?.getBoundingClientRect().height || 0;
+    const travel = Math.max(0, window.scrollY - sectionTop + header);
+    targetScrollPhase = Math.min(1.6, travel / Math.max(1, stage.clientHeight)) * 2.1;
   }
   function pointerMove(event: PointerEvent) {
     if (event.pointerType !== 'mouse' || reduced.matches) return;
@@ -237,6 +254,7 @@ export async function initOrbitalHero(stage: HTMLElement) {
   visibilityObserver.observe(stage);
   stage.addEventListener('pointermove', pointerMove, { passive: true });
   stage.addEventListener('pointerleave', resetPointer);
+  window.addEventListener('scroll', updateScrollPhase, { passive: true });
   toggle?.addEventListener('click', toggleMotion);
   document.addEventListener('visibilitychange', syncPlayback);
   reduced.addEventListener('change', syncPlayback);
@@ -253,6 +271,7 @@ export async function initOrbitalHero(stage: HTMLElement) {
     visibilityObserver.disconnect();
     stage.removeEventListener('pointermove', pointerMove);
     stage.removeEventListener('pointerleave', resetPointer);
+    window.removeEventListener('scroll', updateScrollPhase);
     toggle?.removeEventListener('click', toggleMotion);
     document.removeEventListener('visibilitychange', syncPlayback);
     reduced.removeEventListener('change', syncPlayback);

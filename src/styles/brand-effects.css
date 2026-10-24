@@ -1,0 +1,54 @@
+/* A quiet live insignia: a slow orbital glint, breathing light and hover depth. */
+.site-header .brand--compact {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 54px;
+  height: 54px;
+  isolation: isolate;
+}
+.site-header .brand--compact::before,
+.site-header .brand--compact::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: -1;
+}
+.site-header .brand--compact::before {
+  border: 1px solid color-mix(in srgb, var(--accent) 17%, transparent);
+  mask-image: conic-gradient(transparent 10%, #000 28%, transparent 55%, #000 78%, transparent);
+  animation: insignia-orbit 16s linear infinite;
+}
+.site-header .brand--compact::after {
+  background: radial-gradient(ellipse, color-mix(in srgb, var(--accent) 14%, transparent), transparent 70%);
+  scale: 1.45;
+  opacity: .4;
+  animation: insignia-light 6s ease-in-out infinite;
+}
+.site-header .brand-symbol {
+  transform: perspective(240px) rotateY(0deg) rotateZ(var(--brand-lean, 0deg));
+  transition: transform .65s cubic-bezier(.2,.7,.2,1), filter .5s;
+  animation: insignia-float 7s ease-in-out infinite;
+}
+.site-header .brand-symbol img {
+  filter: drop-shadow(0 0 5px color-mix(in srgb, var(--accent) 26%, transparent));
+}
+.site-header .brand--compact:hover .brand-symbol,
+.site-header .brand--compact:focus-visible .brand-symbol {
+  transform: perspective(240px) rotateY(18deg) rotateZ(-5deg) scale(1.06);
+  filter: brightness(1.2);
+}
+@keyframes insignia-orbit { to { rotate: 360deg; } }
+@keyframes insignia-light { 50% { opacity: .9; scale: 1.7; } }
+@keyframes insignia-float { 50% { translate: 0 -1.5px; } }
+@media(max-width:600px) {
+  .site-header .brand--compact { width: 45px; height: 45px; }
+}
+@media(prefers-reduced-motion:reduce) {
+  .site-header .brand--compact::before,
+  .site-header .brand--compact::after,
+  .site-header .brand-symbol { animation: none; }
+  .site-header .brand-symbol { transform: none; }
+}
