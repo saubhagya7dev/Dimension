@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import OrbitalHero from '../components/OrbitalHero.astro';
+import FpvPlayer from '../components/FpvPlayer.astro';
 import Artwork from '../components/Artwork.astro';
 import { projects, filters } from '../data/projects';
 import { site } from '../data/site';
@@ -23,10 +24,24 @@ const services = [
 
   <section id="fpv" class="fpv-section tracked-section" data-section-label="In flight">
     <div class="section-bar"><span>03 / FPV cinematics</span><span>A new point of view</span></div>
-    <div class="fpv-stage"><div class="fpv-image" data-parallax><img src={site.fpvPoster} alt="AI concept of an FPV perspective over a dramatic coastal road at sunset" width="1536" height="1024" loading="lazy" /></div><div class="fpv-scrim"></div><div class="fpv-hud"><span><i class="status-dot"></i> Dimension / In flight</span><span>FPV CINEMATICS</span></div><div class="fpv-heading reveal"><p class="eyebrow">Less distance. More feeling.</p><h2>Some stories<br />need <em>wings.</em></h2><p>Beyond the frame. Through the landscape.<br />A perspective that brings you closer.</p>{site.fpvVideo ? <button class="button button-primary" data-open-film>Watch the film <span>▷</span></button> : <span class="film-coming"><span class="status-dot"></span> First flight film — in the making</span>}</div><div class="fpv-reticle" aria-hidden="true"><span></span><i></i></div><div class="fpv-bottom"><span>Creative flight / Cinematic vision</span><span>{site.fpvVideo ? 'DIMENSION ORIGINAL' : 'VISUAL CONCEPT · FILM COMING SOON'}</span><span>↗ No ordinary angle.</span></div></div>
+    <div class="fpv-stage">
+      <div class="fpv-image" data-parallax>
+        <img src={site.fpvPoster} alt="Cinematic coastal flight poster" width="1536" height="1024" loading="lazy" />
+        {site.fpvVideo && <video class="fpv-background-video" data-inline-film muted loop playsinline preload="none" poster={site.fpvPoster}><source src={site.fpvVideo} type="video/mp4" /></video>}
+      </div>
+      <div class="fpv-scrim"></div>
+      <div class="fpv-hud"><span><i class="status-dot"></i> Dimension / In flight</span><span>FPV cinematics</span></div>
+      <div class="fpv-heading reveal">
+        <p class="eyebrow">Less distance. More feeling.</p>
+        <h2>Some stories<br />need <em>wings.</em></h2>
+        <p>Beyond the frame. Through the landscape.<br />A perspective that brings you closer.</p>
+        {site.fpvVideo ? <span class="fpv-live-note"><span class="status-dot"></span> Moving perspectives / Dimension original</span> : <span class="film-coming"><span class="status-dot"></span> First flight film — in the making</span>}
+      </div>
+      {site.fpvVideo ? <button class="fpv-reticle fpv-launch" data-open-film aria-label="Open FPV film" aria-haspopup="dialog" aria-controls="fpv-player"><span aria-hidden="true"></span><i aria-hidden="true"></i><span class="reticle-label">Enter the flight ↗</span></button> : <div class="fpv-reticle" aria-hidden="true"><span></span><i></i></div>}
+      <div class="fpv-bottom"><span>Creative flight / Cinematic vision</span><span>{site.fpvVideo ? 'Dimension original' : 'Visual concept · Film coming soon'}</span><span>↗ No ordinary angle.</span></div>
+    </div>
     <div class="fpv-description"><p>Perspective changes everything.</p><span>FPV is a way of seeing. We’re bringing the same attention to composition, atmosphere and detail from our design work into the air.</span><a href={`mailto:${site.email}?subject=FPV%20cinematics%20enquiry`} class="text-link">Talk about a flight ↗</a></div>
   </section>
-
   <section id="services" class="services-section tracked-section" data-section-label="The craft">
     <div class="section-bar"><span>04 / What we do</span><span>Thought through. Crafted with intent.</span></div>
     <div class="section-intro reveal"><p class="eyebrow">From an idea to an impression.</p><div class="intro-row"><h2>Considered craft.<br /><em>Across dimensions.</em></h2><p>One creative partner. A range of ways to bring your story into focus.</p></div></div>
@@ -41,5 +56,5 @@ const services = [
   </section>
 
   <section id="contact" class="contact-section tracked-section" data-section-label="Let’s talk"><div class="section-bar"><span>06 / Your next dimension</span><span>It starts with a conversation.</span></div><div class="contact-content reveal"><p class="eyebrow">Have something in mind?</p><h2>Let’s make<br /><em>an impression.</em><span class="contact-asterisk" aria-hidden="true">✳</span></h2><div class="contact-row"><a class="contact-email" href={`mailto:${site.email}`}>{site.email}<span>↗</span></a><p>Tell us what you’re imagining.<br />We’ll take it from there.</p></div><div class="contact-socials"><a href={site.instagram} target="_blank" rel="noopener noreferrer">Instagram ↗</a><a href={site.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn ↗</a><a href={site.notion} target="_blank" rel="noopener noreferrer">Original work archive ↗</a><span>Contact for a quote.</span></div></div></section>
-  {site.fpvVideo && <dialog class="film-dialog"><form method="dialog"><button class="dialog-close" aria-label="Close film">Close ✕</button></form><video controls playsinline preload="none" poster={site.fpvPoster}><source src={site.fpvVideo} type="video/mp4" /></video></dialog>}
+  {site.fpvVideo && <FpvPlayer src={site.fpvVideo} poster={site.fpvPoster} />}
 </Layout>

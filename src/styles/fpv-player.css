@@ -1,0 +1,185 @@
+/* The film lives within the existing partial-frame landscape, under a dark L→R gradient. */
+.fpv-background-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity .8s ease;
+}
+.fpv-background-video.has-frame { opacity: 1; }
+.fpv-stage .fpv-scrim {
+  background: linear-gradient(90deg, rgba(10,12,14,.92) 0%, rgba(10,12,14,.62) 34%, rgba(10,12,14,.12) 80%), linear-gradient(0deg, rgba(10,12,14,.7), transparent 44%, rgba(10,12,14,.15));
+  pointer-events: none;
+}
+.fpv-stage .fpv-launch {
+  z-index: 3;
+  padding: 0;
+  color: var(--text);
+  background: rgba(17,18,20,.15);
+  backdrop-filter: blur(3px);
+  opacity: 1;
+  cursor: pointer;
+  transition: border-color .3s, background .3s, scale .4s;
+}
+.fpv-stage .fpv-launch::before,
+.fpv-stage .fpv-launch::after { background: var(--text); }
+.fpv-stage .fpv-launch i {
+  transition: scale .5s, border-color .3s;
+  border-color: rgba(255,255,255,.25);
+}
+.fpv-launch:hover, .fpv-launch:focus-visible {
+  border-color: var(--accent);
+  background: rgba(17,18,20,.4);
+  scale: 1.07;
+}
+.fpv-launch:hover i, .fpv-launch:focus-visible i {
+  scale: 1.13;
+  border-color: color-mix(in srgb, var(--accent) 60%, transparent);
+}
+.reticle-label {
+  position: absolute;
+  top: calc(100% + 25px);
+  left: 50%;
+  translate: -50% 0;
+  white-space: nowrap;
+  font: 8px var(--mono);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: #e5e5e5;
+  text-shadow: 0 2px 12px #000;
+}
+.fpv-live-note {
+  display: inline-flex;
+  gap: 10px;
+  align-items: center;
+  margin-top: 29px;
+  font: 8px var(--mono);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: #bdbdbf;
+}
+.film-dialog {
+  width: min(1320px, calc(100vw - 80px));
+  max-width: none;
+  max-height: calc(100dvh - 50px);
+  padding: 0;
+  border: 0;
+  outline: none;
+  overflow: visible;
+  background: transparent;
+  color: var(--text);
+}
+.film-dialog::backdrop {
+  background: rgba(6,8,11,.88);
+  backdrop-filter: blur(20px) saturate(.65);
+}
+.film-dialog[open] { animation: film-arrive .45s cubic-bezier(.2,.7,.2,1) both; }
+.film-player { position: relative; width: 100%; }
+.film-dialog .film-video {
+  display: block;
+  width: 100%;
+  max-height: calc(100dvh - 155px);
+  object-fit: contain;
+  background: #050607;
+  border: 0;
+  box-shadow: 0 24px 100px rgba(0,0,0,.35);
+}
+.film-player-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding-bottom: 18px;
+}
+.film-player-top>p {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  font: 10px var(--mono);
+  text-transform: uppercase;
+  letter-spacing: .1em;
+}
+.film-player-subtitle { color: var(--muted); }
+.film-close {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  background: transparent;
+  color: #ddd;
+  border: 1px solid transparent;
+  border-radius: 50%;
+  transition: background .25s, color .25s, rotate .3s;
+}
+.film-close span { font: 29px/1 var(--body); font-weight: 300; }
+.film-close:hover { background: rgba(255,255,255,.08); color: #fff; rotate: 90deg; }
+.film-controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-height: 55px;
+  padding: 12px 0 0;
+}
+.film-controls button {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  min-height: 36px;
+  padding: 0;
+  background: transparent;
+  color: #e2e2e4;
+  font: 22px var(--body);
+  transition: color .2s;
+}
+.film-controls button:hover { color: var(--accent); }
+.film-time { color: var(--muted); font: 9px var(--mono); min-width: 90px; white-space: nowrap; }
+.film-seek {
+  flex: 1;
+  min-width: 40px;
+  height: 24px;
+  margin: 0;
+  background: transparent;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+.film-controls .film-sound {
+  width: auto;
+  min-width: 76px;
+  font: 8px var(--mono);
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+.film-dialog:fullscreen {
+  width: 100vw;
+  height: 100dvh;
+  max-height: none;
+  background: #050607;
+  display: grid;
+  align-content: center;
+  padding: 20px 32px;
+}
+.film-dialog:fullscreen .film-video { max-height: calc(100dvh - 130px); }
+@keyframes film-arrive { from { opacity: 0; translate: 0 16px; scale: .975; } to { opacity: 1; translate: 0 0; scale: 1; } }
+@media(max-width:600px) {
+  .fpv-stage .fpv-launch { width: 54px; height: 54px; right: 30px; top: 20%; }
+  .reticle-label { font-size: 7px; top: calc(100% + 21px); letter-spacing: .05em; }
+  .fpv-live-note { font-size: 7px; max-width: 210px; line-height: 1.8; }
+  .film-dialog { width: calc(100vw - 28px); max-height: calc(100dvh - 30px); }
+  .film-dialog .film-video { max-height: calc(100dvh - 155px); }
+  .film-player-top { padding-bottom: 12px; }
+  .film-player-top>p { font-size: 8px; gap: 7px; }
+  .film-close { width: 36px; height: 36px; }
+  .film-controls { gap: 7px; flex-wrap: wrap; }
+  .film-time { font-size: 8px; min-width: 77px; }
+  .film-controls .film-sound { min-width: 55px; font-size: 7px; }
+  .film-controls button { width: 30px; min-height: 40px; }
+  .film-dialog:fullscreen { padding: 12px; }
+}
+@media(prefers-reduced-motion:reduce) {
+  .film-dialog[open] { animation: none; }
+  .fpv-background-video:not(.has-frame) { display: none; }
+}

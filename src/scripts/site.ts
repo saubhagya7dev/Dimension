@@ -1,3 +1,5 @@
+import { initFpvFilm } from './fpv-film';
+
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 const root = document.documentElement;
 root.classList.add('motion-ready');
@@ -156,5 +158,5 @@ function connectDialog(triggerSelector: string, dialogSelector: string) {
   });
 }
 connectDialog('[data-open-art]', '.art-dialog');
-connectDialog('[data-open-film]', '.film-dialog');
+initFpvFilm();
 if (reducedMotion.matches) document.querySelectorAll<HTMLVideoElement>('.hero-video').forEach(video => video.pause());

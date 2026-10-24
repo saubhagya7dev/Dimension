@@ -1,0 +1,21 @@
+---
+import '../styles/fpv-player.css';
+interface Props { src: string; poster: string; }
+const { src, poster } = Astro.props;
+---
+<dialog id="fpv-player" class="film-dialog" aria-label="Dimension FPV film">
+  <div class="film-player">
+    <div class="film-player-top">
+      <p><span class="status-dot"></span> Dimension <span class="film-player-subtitle">/ In flight</span></p>
+      <form method="dialog"><button class="film-close" aria-label="Close FPV film"><span aria-hidden="true">×</span></button></form>
+    </div>
+    <video class="film-video" controls playsinline preload="none" poster={poster}><source src={src} type="video/mp4" /></video>
+    <div class="film-controls" aria-label="Film playback controls" hidden>
+      <button data-film-play aria-label="Pause film"><span data-film-play-icon aria-hidden="true">Ⅱ</span></button>
+      <span class="film-time" data-film-time aria-live="off">0:00 / 0:00</span>
+      <input class="film-seek" data-film-seek type="range" min="0" max="100" step="0.1" value="0" aria-label="Seek through FPV film" />
+      <button class="film-sound" data-film-sound aria-label="Mute film" aria-pressed="false">Sound on</button>
+      <button data-film-fullscreen aria-label="Enter fullscreen"><span aria-hidden="true">⛶</span></button>
+    </div>
+  </div>
+</dialog>
