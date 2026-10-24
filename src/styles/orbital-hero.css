@@ -32,6 +32,7 @@
 .orbital-stage-meta a span{color:var(--accent);font-size:14px}
 .orbit-motion-toggle{position:absolute;right:var(--gutter);bottom:65px;z-index:5;display:flex;align-items:center;gap:7px;padding:7px 9px;background:rgba(17,18,20,.65);border:1px solid var(--line);color:var(--muted);font:7px var(--mono);letter-spacing:.04em;text-transform:uppercase;backdrop-filter:blur(6px)}
 .orbit-motion-toggle:hover{border-color:var(--accent);color:var(--text)}
+.orbital-stage:not([data-orbit-state="ready"]) .orbit-motion-toggle{display:none}
 [data-orbit-state="static"] .orbit-motion-toggle,[data-orbit-state="fallback"] .orbit-motion-toggle{display:none}
 .discipline-ticker{height:43px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);overflow:hidden;background:var(--bg);display:flex;align-items:center}
 .ticker-track{display:flex;width:max-content;animation:discipline-drift 44s linear infinite;will-change:transform}
@@ -39,6 +40,8 @@
 .ticker-copy>span{display:flex;align-items:center;gap:36px;padding-left:36px;white-space:nowrap;font:9px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 .ticker-copy b{font-weight:400;color:var(--accent);font-size:12px}
 .discipline-ticker:hover .ticker-track,.orbital-hero.is-motion-paused .ticker-track{animation-play-state:paused}
+.orbital-hero.is-offscreen .ticker-track{animation-play-state:paused}
+.orbital-hero:has([data-orbit-state="static"]) .ticker-track,.orbital-hero:has([data-orbit-state="fallback"]) .ticker-track{animation-play-state:paused}
 @keyframes discipline-drift{to{transform:translateX(-50%)}}
 .orbital-fallback{position:absolute;inset:0;z-index:-3;transition:opacity 1s;pointer-events:none}
 [data-orbit-state="ready"] .orbital-fallback{opacity:0}

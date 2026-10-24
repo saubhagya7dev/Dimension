@@ -227,6 +227,7 @@ export async function initOrbitalHero(stage: HTMLElement) {
   const resizeObserver = new ResizeObserver(resize);
   const visibilityObserver = new IntersectionObserver(entries => {
     inView = entries[0]?.isIntersecting ?? false;
+    stage.closest('.orbital-hero')?.classList.toggle('is-offscreen', !inView);
     syncPlayback();
   }, { threshold: 0 });
   resizeObserver.observe(host);

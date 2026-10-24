@@ -25,8 +25,8 @@ for (const filename of files) {
     try {
       const info = await stat(target);
       if (info.isDirectory()) target = path.join(target, 'index.html');
-      const contents = await readFile(target, 'utf8');
       if (url.hash && target.endsWith('.html')) {
+        const contents = await readFile(target, 'utf8');
         const id = decodeURIComponent(url.hash.slice(1));
         if (!contents.includes(`id="${id}"`)) throw new Error(`missing anchor ${id}`);
       }

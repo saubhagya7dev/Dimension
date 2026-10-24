@@ -26,6 +26,20 @@ If Astro cannot access its telemetry configuration directory, set `ASTRO_TELEMET
 
 Edit `--accent` at the beginning of `src/styles/global.css`. Current accent: **Fusion Red, #ff5e5e**. Buttons, highlights, the progress ruler and decorative elements all use this variable.
 
+## Orbital landing page
+
+The opening now uses `src/components/OrbitalHero.astro`, with its own stylesheet at `src/styles/orbital-hero.css` and a lazy-loaded Three.js renderer at `src/scripts/orbital-hero.ts`.
+
+- The original Dimension wordmark, headline and actions are accessible HTML above the canvas.
+- Artwork comes from `src/data/projects.ts`. Original images automatically replace the concept-sheet cells in the orbit.
+- The renderer uses shallow curved planes, three orbital paths, subtle pointer parallax, and the current `--accent` color.
+- Desktop motion runs at a maximum of 30 frames per second, with device pixel ratio capped at 1.5. Rendering and background video pause when the hero leaves the viewport or the browser tab is hidden.
+- The **Pause motion** button freezes the orbit, background video and ticker together.
+- Mobile (600px and below), reduced-motion users and browsers without WebGL receive a static artwork composition. Mobile does not download the Three.js chunk or autoplay the background film.
+- The full portfolio gallery and its links work independently of the optional renderer.
+
+To tune the scene, edit `count`, orbital speeds and ellipse radii in `orbital-hero.ts`. The main graphics runtime is intentionally a separate desktop-only lazy chunk, rather than part of the base page script.
+
 ## Add or replace projects
 
 Edit `src/data/projects.ts`. Each entry creates a gallery card and a page at `/work/<slug>/`.
