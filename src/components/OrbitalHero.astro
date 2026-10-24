@@ -1,0 +1,52 @@
+---
+import { projects } from '../data/projects';
+import { site } from '../data/site';
+import '../styles/orbital-hero.css';
+
+const orbitalProjects = projects.map(project => ({
+  image: project.image || '/images/artwork-sheet.webp',
+  cell: project.image ? null : project.cell,
+  title: project.title,
+}));
+const disciplines = ['Graphic design', 'FPV cinematics', 'Moving images', 'Photography', 'Visual identity', 'Content systems', 'Art direction'];
+---
+<section id="intro" class="hero orbital-hero tracked-section" data-section-label="Dimension">
+  <div class="section-bar"><span>01 / Dimension studio</span><span>Design · Film · Flight</span></div>
+  <div class="orbital-stage" data-orbital-stage>
+    <div class="orbital-film" aria-hidden="true">
+      <img src={site.fpvPoster} alt="" fetchpriority="high" width="1672" height="941" />
+      {site.fpvVideo && <video class="hero-video" autoplay muted loop playsinline preload="none" poster={site.fpvPoster}><source src={site.fpvVideo} type="video/mp4" /></video>}
+    </div>
+    <div class="orbital-world" data-orbital-world data-projects={JSON.stringify(orbitalProjects)} aria-hidden="true"></div>
+    <div class="orbital-fallback" aria-hidden="true">
+      {projects.slice(0,6).map((project, index) => <div class={`fallback-tile fallback-tile-${index}`} style={project.image ? `background-image:url('${project.image}');background-size:cover` : `background-position:${(project.cell % 3) * 50}% ${Math.floor(project.cell / 3) * 50}%`}></div>)}
+      <div class="fallback-ring"></div><div class="fallback-ring ring-secondary"></div>
+    </div>
+    <div class="orbital-vignette" aria-hidden="true"></div>
+    <div class="orbital-center">
+      <p class="eyebrow orbital-kicker"><span class="status-dot"></span> Independent minds. Uncommon perspectives.</p>
+      <h1 class="orbital-wordmark"><span class="sr-only">Dimension — visuals with another perspective.</span><img src="/brand/dimension-wordmark.png" width="2172" height="724" alt="" fetchpriority="high" /></h1>
+      <h2 class="orbital-tagline">Beyond the ordinary.<br class="mobile-orbit-break" /> <em>Into another dimension.</em></h2>
+      <p class="orbital-description">Design that speaks. Films that move.<br />A creative company with a different point of view.</p>
+      <div class="orbital-actions"><a class="button button-primary" href="#work">Explore our work <span>↗</span></a><a class="button orbital-secondary" href={`mailto:${site.email}`}>Discuss a project <span>↗</span></a></div>
+      <div class="orbital-footnote"><span>Design / Film / Flight</span><span class="orbital-footnote-divider">+</span><a href="#fpv"><span class="play-small">▷</span> Discover FPV cinematics</a></div>
+    </div>
+    <div class="orbital-stage-meta"><span><span class="tiny-cross">+</span> A world of possibilities.</span><a href="#work">Scroll to explore <span>↓</span></a><span class="orbit-coordinate">Dimension / Creative company</span></div>
+    <button class="orbit-motion-toggle" data-orbit-toggle aria-pressed="false" aria-label="Pause orbital animation"><span aria-hidden="true">Ⅱ</span><span data-orbit-toggle-label>Pause motion</span></button>
+  </div>
+  <div class="discipline-ticker" aria-label="Our disciplines"><div class="ticker-track">{[0,1].map(copy => <div class="ticker-copy" aria-hidden={copy === 1 ? 'true' : undefined}>{disciplines.map(label => <span>{label}<b aria-hidden="true">✳</b></span>)}</div>)}</div></div>
+</section>
+<script>
+  const stage = document.querySelector<HTMLElement>('[data-orbital-stage]');
+  if (stage) {
+    // Keep the content independent of the optional 3D renderer.
+    // Mobile and reduced-motion visitors retain the static composition.
+    if (window.innerWidth > 600 && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      import('../scripts/orbital-hero').then(({ initOrbitalHero }) => initOrbitalHero(stage)).catch(() => {
+        stage.dataset.orbitState = 'fallback';
+      });
+    } else {
+      stage.dataset.orbitState = 'static';
+    }
+  }
+</script>
