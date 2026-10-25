@@ -1,0 +1,8 @@
+.header-identity{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.header-flight-wordmark{display:block;position:relative;width:170px;aspect-ratio:8.15;overflow:hidden;pointer-events:none}
+.header-flight-wordmark img{position:absolute;width:113.2%;max-width:none;height:auto;left:-6.6%;top:50%;transform:translateY(-49%);mix-blend-mode:screen}
+body[data-home="true"] .header-flight-wordmark{opacity:0}
+.wordmark-flight-canvas{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:55;contain:strict}
+@media(max-width:1150px){.header-identity{margin-right:auto}}
+@media(max-width:600px){.header-identity{gap:6px}.header-flight-wordmark{width:120px}}
+@media(max-width:380px){.header-flight-wordmark{width:100px}}

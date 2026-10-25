@@ -1,4 +1,5 @@
 import { initFpvFilm } from './fpv-film';
+import { initWordmarkFlight } from './wordmark-flight';
 
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 const root = document.documentElement;
@@ -184,4 +185,5 @@ function connectDialog(triggerSelector: string, dialogSelector: string) {
 }
 connectDialog('[data-open-art]', '.art-dialog');
 initFpvFilm();
+void initWordmarkFlight();
 if (reducedMotion.matches) document.querySelectorAll<HTMLVideoElement>('.hero-video').forEach(video => video.pause());

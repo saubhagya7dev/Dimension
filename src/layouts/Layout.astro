@@ -5,6 +5,7 @@ import '../styles/global.css';
 import '../styles/brand-effects.css';
 import '../styles/performance.css';
 import '../styles/typography.css';
+import '../styles/wordmark-flight.css';
 interface Props { title?: string; description?: string; home?: boolean; }
 const { title = 'Dimension — Beyond the ordinary.', description = site.description, home = false } = Astro.props;
 const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefined;
@@ -33,7 +34,10 @@ const socialImage = Astro.site ? new URL(site.fpvPoster, Astro.site).href : site
   <body data-home={home}>
     <a class="skip-link" href="#main">Skip to content</a>
     <header class="site-header">
-      <Brand compact />
+      <div class="header-identity">
+        <Brand compact />
+        <span class="header-flight-wordmark" data-header-wordmark aria-hidden="true"><img src="/brand/dimension-wordmark.png" width="2172" height="724" alt="" /></span>
+      </div>
       <nav class="desktop-nav" aria-label="Main navigation">
         <a href={home ? '#work' : '/#work'}>Work</a>
         <a href={home ? '#fpv' : '/#fpv'}>FPV cinematics <span class="nav-dot"></span></a>
