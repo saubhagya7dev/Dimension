@@ -25,7 +25,8 @@ export async function initOrbitalHero(stage: HTMLElement) {
     return;
   }
   renderer.setClearColor(0x111214, 0);
-  renderer.setPixelRatio(Math.min(devicePixelRatio, 1.5));
+  // Decorative media does not need a retina-sized drawing buffer.
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 1));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.domElement.setAttribute('aria-hidden', 'true');
   renderer.domElement.setAttribute('role', 'presentation');
@@ -161,10 +162,17 @@ export async function initOrbitalHero(stage: HTMLElement) {
   const pointer = new THREE.Vector2();
   const smoothPointer = new THREE.Vector2();
   let width = 0;
+  let sectionTop = 0;
+  let stageHeight = 1;
+  let headerHeight = 0;
+  let pointerBounds = { left: 0, top: 0, width: 1, height: 1 };
+  let frameCost = 0;
+  let slowFrames = 0;
+  let resolutionScale = 1;
 
   function draw(time: number) {
     if (disposed) return;
-    if (previousTime && time - previousTime < 1000 / 30) return;
+    const started = performance.now();
     const delta = previousTime ? Math.min((time - previousTime) / 1000, .08) : 0;
     previousTime = time;
     if (running) {
@@ -173,7 +181,7 @@ export async function initOrbitalHero(stage: HTMLElement) {
       // Ambient drift remains deliberately slower than the scroll contribution.
       scrollPhase += (targetScrollPhase - scrollPhase) * (1 - Math.exp(-9 * delta));
     }
-    smoothPointer.lerp(pointer, .045);
+    smoothPointer.lerp(pointer, 1 - Math.exp(-5 * delta));
     camera.position.x = smoothPointer.x * .35;
     camera.position.y = smoothPointer.y * .22;
     camera.lookAt(0, 0, 0);
@@ -190,8 +198,17 @@ export async function initOrbitalHero(stage: HTMLElement) {
     rings.forEach((ring, index) => { ring.scale.x = horizontalScale; ring.rotation.z = (index - 1) * .23 + Math.sin(elapsed * .045) * .035 + scrollPhase * .10; });
     ticks.scale.x = horizontalScale;
     ticks.rotation.z = scrollPhase * .08;
-    stage.dataset.orbitScrollPhase = scrollPhase.toFixed(4);
     renderer.render(scene, camera);
+    // Lower the buffer once if rendering repeatedly exceeds a frame budget.
+    // Animation keeps following display refresh rather than skipping alternate frames.
+    frameCost = frameCost * .95 + (performance.now() - started) * .05;
+    if (running && frameCost > 12) slowFrames++;
+    else slowFrames = Math.max(0, slowFrames - 1);
+    if (slowFrames > 45 && resolutionScale > .7) {
+      resolutionScale = .7;
+      renderer.setPixelRatio(resolutionScale);
+      stage.dataset.orbitQuality = 'balanced';
+    }
   }
 
   function syncPlayback() {
@@ -212,6 +229,12 @@ export async function initOrbitalHero(stage: HTMLElement) {
   }
   function resize() {
     const bounds = host!.getBoundingClientRect();
+    const section = stage.closest<HTMLElement>('.tracked-section');
+    sectionTop = (section?.getBoundingClientRect().top || 0) + window.scrollY;
+    stageHeight = Math.max(1, stage.clientHeight);
+    headerHeight = document.querySelector('.site-header')?.getBoundingClientRect().height || 0;
+    const stageBounds = stage.getBoundingClientRect();
+    pointerBounds = { left: stageBounds.left, top: stageBounds.top + window.scrollY, width: stageBounds.width, height: stageBounds.height };
     width = bounds.width;
     camera.aspect = bounds.width / Math.max(1, bounds.height);
     camera.updateProjectionMatrix();
@@ -220,16 +243,12 @@ export async function initOrbitalHero(stage: HTMLElement) {
     syncPlayback();
   }
   function updateScrollPhase() {
-    const section = stage.closest<HTMLElement>('.tracked-section');
-    const sectionTop = (section?.getBoundingClientRect().top || 0) + window.scrollY;
-    const header = document.querySelector('.site-header')?.getBoundingClientRect().height || 0;
-    const travel = Math.max(0, window.scrollY - sectionTop + header);
-    targetScrollPhase = Math.min(1.6, travel / Math.max(1, stage.clientHeight)) * 2.1;
+    const travel = Math.max(0, window.scrollY - sectionTop + headerHeight);
+    targetScrollPhase = Math.min(1.6, travel / stageHeight) * 2.1;
   }
   function pointerMove(event: PointerEvent) {
     if (event.pointerType !== 'mouse' || reduced.matches) return;
-    const bounds = stage.getBoundingClientRect();
-    pointer.set((event.clientX - bounds.left) / bounds.width * 2 - 1, -((event.clientY - bounds.top) / bounds.height * 2 - 1));
+    pointer.set((event.clientX - pointerBounds.left) / pointerBounds.width * 2 - 1, -((event.clientY + window.scrollY - pointerBounds.top) / pointerBounds.height * 2 - 1));
   }
   function resetPointer() { pointer.set(0, 0); }
   function toggleMotion() {
@@ -244,7 +263,7 @@ export async function initOrbitalHero(stage: HTMLElement) {
     syncPlayback();
   }
   const resizeObserver = new ResizeObserver(resize);
-  const headerHeight = document.querySelector('.site-header')?.getBoundingClientRect().height || 0;
+  headerHeight = document.querySelector('.site-header')?.getBoundingClientRect().height || 0;
   const visibilityObserver = new IntersectionObserver(entries => {
     inView = entries[0]?.isIntersecting ?? false;
     stage.closest('.orbital-hero')?.classList.toggle('is-offscreen', !inView);

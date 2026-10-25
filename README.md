@@ -89,3 +89,18 @@ Before publishing on a final domain, add that URL as `site` in `astro.config.mjs
 
 WebP files are optimized encodings of the generated PNG assets. The website serves the smaller WebP versions.
 
+# Scroll performance
+
+Background films use a silent 1280×720, 30 fps `.preview.mp4` sibling when one
+exists; the popup keeps the original film. After replacing a local MP4, generate
+its matching background with `node scripts/optimize-video.mjs public/media/your-film.mp4`.
+The command never overwrites an existing preview: rename that preview before
+regenerating it. Rebuild after adding the generated file. The current background
+is 9,037,806 bytes versus the 499 MB original (about 98% smaller).
+
+Orbital animation follows display refresh, renders at a capped pixel ratio of 1,
+and can reduce its buffer further when rendering is persistently expensive.
+It still pauses offscreen and in reduced-motion mode. Scroll effects cache layout
+on resize/content changes, and the ruler moves with a transform. Sticky bars use
+opaque backgrounds to avoid repeatedly blurring moving artwork and video.
+

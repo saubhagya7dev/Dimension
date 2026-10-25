@@ -29,15 +29,38 @@ const parallax = document.querySelector<HTMLElement>('[data-parallax]');
 let activeSection = '';
 let framePending = false;
 let compassTimer: ReturnType<typeof setTimeout>;
+let sectionTops: number[] = [];
+let maxScroll = 0;
+let viewportHeight = 0;
+let markerTravel = 0;
+let parallaxTop = 0;
+let parallaxHeight = 0;
+let lastPercentage = -1;
+
+// Layout reads happen when layout changes, never after writes in the scroll loop.
+function measureScrollLayout() {
+  const y = window.scrollY;
+  viewportHeight = window.innerHeight;
+  maxScroll = Math.max(0, root.scrollHeight - viewportHeight);
+  sectionTops = sections.map(section => section.getBoundingClientRect().top + y);
+  markerTravel = progress?.clientHeight || 0;
+  const bounds = parallax?.parentElement?.getBoundingClientRect();
+  parallaxTop = bounds ? bounds.top + y : 0;
+  parallaxHeight = bounds?.height || 0;
+  scheduleScroll();
+}
 
 function updateScroll() {
-  const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
   const amount = maxScroll > 0 ? Math.min(1, Math.max(0, window.scrollY / maxScroll)) : 0;
-  progress?.style.setProperty('--scroll-progress', `${amount * 100}%`);
-  if (percentage) percentage.textContent = Math.round(amount * 100).toString().padStart(3, '0');
-  const trigger = window.innerHeight * 0.36;
+  progress?.style.setProperty('--scroll-offset', `${amount * markerTravel}px`);
+  const rounded = Math.round(amount * 100);
+  if (percentage && rounded !== lastPercentage) {
+    percentage.textContent = rounded.toString().padStart(3, '0');
+    lastPercentage = rounded;
+  }
+  const trigger = window.scrollY + viewportHeight * 0.36;
   let active = sections[0];
-  sections.forEach(section => { if (section.getBoundingClientRect().top <= trigger) active = section; });
+  sections.forEach((section, i) => { if (sectionTops[i] <= trigger) active = section; });
   if (active && active.id !== activeSection) {
     activeSection = active.id;
     const activeIndex = compassLinks.findIndex(link => link.dataset.compass === activeSection);
@@ -54,7 +77,6 @@ function updateScroll() {
     });
     compass?.classList.remove('is-transitioning');
     if (compass && !reducedMotion.matches) {
-      void compass.offsetWidth;
       compass.classList.add('is-transitioning');
       clearTimeout(compassTimer);
       compassTimer = setTimeout(() => compass.classList.remove('is-transitioning'), 750);
@@ -62,19 +84,22 @@ function updateScroll() {
     document.querySelectorAll<HTMLAnchorElement>('.desktop-nav a').forEach(link => link.classList.toggle('is-active', link.hash === `#${activeSection}`));
   }
   if (parallax && !reducedMotion.matches && window.innerWidth > 600) {
-    const rect = parallax.parentElement!.getBoundingClientRect();
-    if (rect.bottom > 0 && rect.top < innerHeight) {
-      const offset = Math.max(-50, Math.min(50, (innerHeight / 2 - (rect.top + rect.height / 2)) * .09));
-      parallax.style.transform = `translateY(${offset}px)`;
+    const top = parallaxTop - window.scrollY;
+    if (top + parallaxHeight > 0 && top < viewportHeight) {
+      const offset = Math.max(-50, Math.min(50, (viewportHeight / 2 - (top + parallaxHeight / 2)) * .09));
+      parallax.style.transform = `translate3d(0,${offset}px,0)`;
     }
   }
   framePending = false;
 }
-window.addEventListener('scroll', () => {
+function scheduleScroll() {
   if (!framePending) { requestAnimationFrame(updateScroll); framePending = true; }
-}, { passive: true });
-window.addEventListener('resize', updateScroll, { passive: true });
-updateScroll();
+}
+window.addEventListener('scroll', scheduleScroll, { passive: true });
+window.addEventListener('resize', measureScrollLayout, { passive: true });
+new ResizeObserver(measureScrollLayout).observe(document.body);
+void document.fonts.ready.then(measureScrollLayout);
+measureScrollLayout();
 
 // A light perspective response adds depth without WebGL or continuous rendering.
 const tiltTargets = document.querySelectorAll<HTMLElement>('[data-tilt]');
@@ -113,7 +138,7 @@ filters.forEach(button => {
       if (show) { visible++; card.classList.add('is-visible'); }
     });
     if (count) count.textContent = `${visible.toString().padStart(2, '0')} project${visible === 1 ? '' : 's'}`;
-    updateScroll();
+    measureScrollLayout();
   });
 });
 
