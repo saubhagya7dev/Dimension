@@ -5,6 +5,7 @@ import FpvPlayer from '../components/FpvPlayer.astro';
 import Artwork from '../components/Artwork.astro';
 import { projects, filters } from '../data/projects';
 import { site } from '../data/site';
+import { backgroundVideo } from '../data/media';
 const services = [
   { number: '01', icon: '◫', title: 'Graphic design.', text: 'A distinct visual voice. From the first impression to the smallest detail.', tags: ['Posters & campaigns', 'Thumbnails', 'Social graphics', 'Visual identity'] },
   { number: '02', icon: '▷', title: 'Moving images.', text: 'Stories with rhythm. Thoughtful edits that turn footage into a feeling.', tags: ['Video editing', 'Color & finishing', 'Motion graphics', 'Content production'] },
@@ -27,7 +28,7 @@ const services = [
     <div class="fpv-stage">
       <div class="fpv-image" data-parallax>
         <img src={site.fpvPoster} alt="Cinematic coastal flight poster" width="1536" height="1024" loading="lazy" />
-        {site.fpvVideo && <video class="fpv-background-video" data-inline-film muted loop playsinline preload="none" poster={site.fpvPoster}><source src={site.fpvVideo} type="video/mp4" /></video>}
+        {site.fpvVideo && <video class="fpv-background-video" data-inline-film muted loop playsinline preload="none" poster={site.fpvPoster}><source src={backgroundVideo(site.fpvVideo)} type="video/mp4" /></video>}
       </div>
       <div class="fpv-scrim"></div>
       <div class="fpv-hud"><span><i class="status-dot"></i> Dimension / In flight</span><span>FPV cinematics</span></div>

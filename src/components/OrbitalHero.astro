@@ -1,6 +1,7 @@
 ---
 import { projects } from '../data/projects';
 import { site } from '../data/site';
+import { backgroundVideo } from '../data/media';
 import '../styles/orbital-hero.css';
 
 const orbitalProjects = projects.map(project => ({
@@ -15,7 +16,7 @@ const disciplines = ['Graphic design', 'FPV cinematics', 'Moving images', 'Photo
   <div class="orbital-stage" data-orbital-stage>
     <div class="orbital-film" aria-hidden="true">
       <img src={site.fpvPoster} alt="" fetchpriority="high" width="1672" height="941" />
-      {site.fpvVideo && <video class="hero-video" muted loop playsinline preload="none" poster={site.fpvPoster}><source src={site.fpvVideo} type="video/mp4" /></video>}
+      {site.fpvVideo && <video class="hero-video" muted loop playsinline preload="none" poster={site.fpvPoster}><source src={backgroundVideo(site.fpvVideo)} type="video/mp4" /></video>}
     </div>
     <div class="orbital-world" data-orbital-world data-projects={JSON.stringify(orbitalProjects)} aria-hidden="true"></div>
     <div class="orbital-fallback" aria-hidden="true">
