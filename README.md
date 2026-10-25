@@ -108,3 +108,17 @@ Headings use the supplied The Bold Font, served locally from
 `public/fonts/the-bold-font.otf` with swap loading. Body and technical labels keep
 their existing fonts; the original Dimension image wordmark stays unchanged.
 
+## Wordmark particle transition
+
+On the homepage, scrolling dissolves the large wordmark into white particles and
+reassembles it beside the header symbol. Scrolling upward retraces the same path.
+The particle silhouette is sampled from the original PNG once; a fixed decorative
+2D canvas draws only on scroll/resize updates, with no idle animation loop. The
+original images provide crisp endpoints. Reduced-motion visitors get a simple
+logo handoff without flying particles. Project pages show the header lockup directly.
+
+Implementation: `src/scripts/wordmark-flight.ts` and
+`src/styles/wordmark-flight.css`. Timing starts after 24px of scroll and finishes
+relative to the hero wordmark's measured position. Responsive destinations are
+170px on desktop, 120px on mobile, and 100px on narrow screens.
+
