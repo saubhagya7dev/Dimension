@@ -112,6 +112,11 @@ their existing fonts; the original Dimension image wordmark stays unchanged.
 
 On the homepage, scrolling dissolves the large wordmark into white particles and
 reassembles it beside the header symbol. Scrolling upward retraces the same path.
+Breakup advances left to right with an outward dust impulse; arriving pixels
+reassemble into sharp header letters in the same order. During travel the DOM
+wordmarks are completely hidden. A transparent canvas silhouette draws only the
+remaining intact source letters and settled target letters, preventing a faded
+duplicate behind the particles.
 The particle silhouette is sampled from the original PNG once; a fixed decorative
 2D canvas draws only on scroll/resize updates, with no idle animation loop. The
 original images provide crisp endpoints. Reduced-motion visitors get a simple
