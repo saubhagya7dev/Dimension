@@ -3,5 +3,5 @@ const { compact = false } = Astro.props;
 ---
 <a class:list={['brand', { 'brand--compact': compact }]} href="/" aria-label="Dimension home">
   <span class="brand-symbol"><img src="/brand/dimension-symbol.png" width="1280" height="1280" alt="" /></span>
-  {!compact && <span class="brand-wordmark"><img src="/brand/dimension-wordmark.png" width="2172" height="724" alt="Dimension" /></span>}
+  {!compact && <span class="brand-wordmark"><img src="/brand/dimension-wordmark.svg" width="2172" height="724" alt="Dimension" /></span>}
 </a>
