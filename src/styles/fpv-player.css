@@ -19,7 +19,7 @@
   color: var(--text);
   background: rgba(17,18,20,.15);
   backdrop-filter: blur(3px);
-  opacity: 1;
+  opacity: 100%;
   cursor: pointer;
   transition: border-color .3s, background .3s, scale .4s;
 }
