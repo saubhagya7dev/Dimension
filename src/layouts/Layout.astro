@@ -4,6 +4,7 @@ import { site } from '../data/site';
 import '../styles/global.css';
 import '../styles/brand-effects.css';
 import '../styles/performance.css';
+import '../styles/typography.css';
 interface Props { title?: string; description?: string; home?: boolean; }
 const { title = 'Dimension — Beyond the ordinary.', description = site.description, home = false } = Astro.props;
 const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefined;
@@ -23,9 +24,10 @@ const socialImage = Astro.site ? new URL(site.fpvPoster, Astro.site).href : site
     {canonical && <link rel="canonical" href={canonical} />}
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="icon" href="/brand/dimension-symbol.png" type="image/png" />
+    <link rel="preload" href="/fonts/the-bold-font.otf" as="font" type="font/otf" crossorigin />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;650;700;750;800;900&family=DM+Mono:wght@400;500&family=Inter:wght@400;450;500;600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;450;500;600&display=swap" rel="stylesheet" />
     <title>{title}</title>
   </head>
   <body data-home={home}>

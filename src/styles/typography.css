@@ -1,0 +1,10 @@
+@font-face {
+  font-family: 'The Bold Font';
+  src: url('/fonts/the-bold-font.otf') format('opentype');
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+}
+
+:root { --heading: 'The Bold Font', Arial, sans-serif; }
+h1, h2, h3 { font-weight: 700; }
