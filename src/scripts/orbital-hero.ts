@@ -25,8 +25,8 @@ export async function initOrbitalHero(stage: HTMLElement) {
     return;
   }
   renderer.setClearColor(0x111214, 0);
-  // Decorative media does not need a retina-sized drawing buffer.
-  renderer.setPixelRatio(Math.min(devicePixelRatio, 1));
+  // Preserve the original crispness; retain the slow-device fallback below.
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 1.5));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.domElement.setAttribute('aria-hidden', 'true');
   renderer.domElement.setAttribute('role', 'presentation');

@@ -1,25 +1,9 @@
-/* Sticky surfaces must not repeatedly sample and blur the moving canvas/video. */
-.site-header.site-header,
-.tracked-section .section-bar {
-  background: #111214;
-  backdrop-filter: none;
-}
-.orbital-secondary.orbital-secondary,
-.orbit-motion-toggle.orbit-motion-toggle {
-  backdrop-filter: none;
-}
-
-/* Keep soft text reveals; large artwork reveals use compositor-only motion. */
-.motion-ready .project-card.reveal {
-  filter: none;
-  transition-property: opacity, translate;
-}
-.motion-ready .reveal.is-visible { filter: none; }
+/* Preserve the original blur reveals and glass surfaces. These optimizations
+   only change how scroll-linked positioning is composited. */
 [data-parallax] {
   will-change: transform;
   transition: none;
 }
-.orbital-film video { filter: none; }
 .orbital-world canvas { contain: strict; }
 
 @media(prefers-reduced-motion:reduce) {
