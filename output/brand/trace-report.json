@@ -1,0 +1,10 @@
+{
+  "source": "public/brand/dimension-wordmark.png",
+  "canvas": {
+    "width": 2172,
+    "height": 724
+  },
+  "method": "Potrace contour tracing with Bezier curve fitting, threshold 128, alphaMax 0.7, optTolerance 0.1",
+  "silhouetteIntersectionOverUnionPercent": 99.726,
+  "note": "Compared at original resolution using alpha/luminance threshold 128. This measures silhouette agreement, not an identical shaded appearance."
+}
