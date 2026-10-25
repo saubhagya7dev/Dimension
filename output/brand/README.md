@@ -13,4 +13,5 @@ and speck suppression 2. Temporary tracing dependencies were removed afterward.
 
 The original PNG has subtle shading; this SVG traces its silhouette as flat white
 shapes. It is a review candidate, not a claim of pixel-identical shading. The
-website still uses its existing PNG until the design is approved.
+approved version is now served from `public/brand/dimension-wordmark.svg`. This
+review copy and the original PNG are retained for comparison.
