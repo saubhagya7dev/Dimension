@@ -153,6 +153,7 @@ export async function initOrbitalHero(stage: HTMLElement) {
 
   let elapsed = 0;
   let previousTime = 0;
+  let nextDraw = 0;
   let inView = true;
   let manuallyPaused = false;
   let contextLost = false;
@@ -172,6 +173,11 @@ export async function initOrbitalHero(stage: HTMLElement) {
 
   function draw(time: number) {
     if (disposed) return;
+    // Decorative media need not consume every frame on 120/144Hz displays.
+    // Keep an advancing deadline so tiny timestamp jitter does not skip 60Hz frames.
+    if (time + .5 < nextDraw) return;
+    if (!nextDraw || time - nextDraw > 40) nextDraw = time;
+    nextDraw += 1000 / 60;
     const started = performance.now();
     const delta = previousTime ? Math.min((time - previousTime) / 1000, .08) : 0;
     previousTime = time;
@@ -219,6 +225,7 @@ export async function initOrbitalHero(stage: HTMLElement) {
     stage.dataset.orbitPlayback = running ? 'running' : 'paused';
     stage.closest('.orbital-hero')?.classList.toggle('is-motion-suspended', !running);
     previousTime = 0;
+    nextDraw = 0;
     renderer.setAnimationLoop(running ? draw : null);
     if (!contextLost && !staticMode) draw(performance.now());
   }

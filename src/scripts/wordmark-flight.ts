@@ -1,14 +1,21 @@
 import { createParticleField, type Fragment, type FlightBox } from './particle-field';
 
 const clamp = (n: number) => Math.max(0, Math.min(1, n));
+const instanceKey = Symbol.for('dimension.wordmarkFlight');
+type FlightHost = HTMLImageElement & { [instanceKey]?: () => void };
 
 /** Native SVG solids + a single GPU particle batch, driven by scroll position. */
 export async function initWordmarkFlight() {
-  const source = document.querySelector<HTMLImageElement>('.orbital-wordmark img');
+  const source = document.querySelector<FlightHost>('.orbital-wordmark img');
   const destination = document.querySelector<HTMLElement>('[data-header-wordmark]');
   const target = destination?.querySelector<HTMLImageElement>('img');
   if (!source || !destination || !target) return;
+  source[instanceKey]?.();
+  let cancelled = false;
+  const cancelPending = () => { cancelled = true; };
+  source[instanceKey] = cancelPending;
   try { await Promise.all([source.decode(), target.decode()]); } catch { return; }
+  if (cancelled) return;
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const canvas = document.createElement('canvas');
   canvas.className = 'wordmark-flight-canvas';
@@ -50,6 +57,8 @@ export async function initWordmarkFlight() {
   let start = 24, end = 420, frame = 0;
   let disposed = false, previousProgress = -1;
   let renderCost = 0, renderSamples = 0;
+  let lastDraw = 0;
+  const frameGaps: number[] = [];
   const leftU = left / sample.width, spanU = (right - left) / sample.width;
 
   function measure() {
@@ -83,7 +92,7 @@ export async function initWordmarkFlight() {
       source!.style.clipPath = 'none'; target!.style.clipPath = 'none';
       source!.style.opacity = progress < .5 ? '1' : '0';
       destination!.style.opacity = progress < .5 ? '0' : '1';
-      canvas.hidden = true;
+      canvas.style.opacity = '0';
       return;
     }
     const departure = clamp(progress / .45), arrival = clamp((progress - .5) / .45);
@@ -93,14 +102,26 @@ export async function initWordmarkFlight() {
     source!.style.clipPath = progress === 0 ? 'none' : `inset(0 0 0 ${(leftU + departure * spanU) * 100}%)`;
     destination!.style.opacity = arrival > 0 ? '1' : '0';
     target!.style.clipPath = progress === 1 ? 'none' : `inset(0 ${(1 - leftU - arrival * spanU) * 100}% 0 0)`;
-    canvas.hidden = progress === 0 || progress >= .95 || document.hidden;
-    if (canvas.hidden) return;
-    field.render({ progress, source: sourceBox, target: targetBox, start, end });
+    const visible = progress > 0 && progress < .95 && !document.hidden;
+    const opacity = visible ? '1' : '0';
+    if (canvas.style.opacity !== opacity) canvas.style.opacity = opacity;
+    if (!visible) { lastDraw = 0; return; }
+    if (!field.render({ progress, source: sourceBox, target: targetBox, start, end })) {
+      previousProgress = -1;
+      schedule();
+      return;
+    }
     if (import.meta.env.DEV) {
       renderCost += performance.now() - renderStarted;
       renderSamples++;
       canvas.dataset.renderMs = (renderCost / renderSamples).toFixed(2);
       canvas.dataset.particles = String(particles.length);
+      if (lastDraw && renderStarted - lastDraw < 200) {
+        frameGaps.push(renderStarted - lastDraw);
+        if (frameGaps.length > 120) frameGaps.shift();
+        canvas.dataset.updateGapMs = (frameGaps.reduce((sum, gap) => sum + gap, 0) / frameGaps.length).toFixed(2);
+      }
+      lastDraw = renderStarted;
     }
   }
   function schedule() {
@@ -115,12 +136,17 @@ export async function initWordmarkFlight() {
   document.addEventListener('visibilitychange', motionChanged);
   reduced.addEventListener('change', motionChanged);
   void document.fonts.ready.then(measure);
-  window.addEventListener('pagehide', event => {
-    if (event.persisted) return;
+  function dispose() {
+    if (disposed) return;
     disposed = true; cancelAnimationFrame(frame); observer.disconnect();
     window.removeEventListener('resize', measure); window.removeEventListener('scroll', schedule);
     document.removeEventListener('visibilitychange', motionChanged); reduced.removeEventListener('change', motionChanged);
+    window.removeEventListener('pagehide', onPageHide);
     field.destroy(); canvas.remove();
-  }, { once: true });
+    if (source![instanceKey] === dispose) delete source![instanceKey];
+  }
+  function onPageHide(event: PageTransitionEvent) { if (!event.persisted) dispose(); }
+  source[instanceKey] = dispose;
+  window.addEventListener('pagehide', onPageHide);
   measure();
 }
