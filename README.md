@@ -99,8 +99,11 @@ regenerating it. Rebuild after adding the generated file. The current background
 is 9,037,806 bytes versus the 499 MB original (about 98% smaller).
 
 The hero has no video or poster request. Its northern-lights background uses
-three soft green/teal CSS gradient curtains, with only transform animations and
-a static star field. It pauses offscreen, in a hidden tab, or with the hero's
+three soft red/crimson CSS gradient curtains, with only transform animations and
+a static star field. One shared layer extends behind the homepage navigation,
+studio-label bar, and hero; translucent top bars and softened dividers blend the
+section together. The header regains its normal background past the hero. The
+backdrop fades into the page at the bottom of the intro. It pauses offscreen, in a hidden tab, or with the hero's
 motion control. Reduced-motion mode keeps it static; mobile uses two curtains.
 The FPV section and popup film retain their existing video behavior.
 
