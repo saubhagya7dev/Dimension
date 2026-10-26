@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8"><title>Dimension repeated-scroll check</title>
+<style>body{background:#111214;color:#eee;font:14px system-ui;margin:24px}button{padding:12px 20px;background:#fc4e4e;border:0;color:white;cursor:pointer}pre{white-space:pre-wrap;font:12px monospace}.preview{width:832px;height:468px;overflow:hidden;margin-top:18px}iframe{width:1280px;height:720px;border:0;transform:scale(.65);transform-origin:top left}</style>
+<h1>Dimension / repeated particle transitions</h1>
+<button id="run" disabled>Run 10 full down/up cycles</button><span id="status"> Loading preview…</span>
+<div class="preview"><iframe id="preview" src="/"></iframe></div><pre id="report"></pre>
+<script>
+const frame=document.querySelector('iframe'),button=document.querySelector('button'),status=document.querySelector('#status'),output=document.querySelector('#report');
+frame.addEventListener('load',()=>{
+  const deadline=performance.now()+15000;
+  function ready(){
+    if(frame.contentDocument.querySelector('.wordmark-flight-canvas')){button.disabled=false;status.textContent=' Ready';return;}
+    if(performance.now()>deadline){status.textContent=' Preview did not initialize';return;}
+    requestAnimationFrame(ready);
+  }
+  ready();
+});
+button.addEventListener('click',async()=>{
+  button.disabled=true;output.textContent='';
+  const w=frame.contentWindow,d=frame.contentDocument,oldBehavior=d.documentElement.style.scrollBehavior;
+  d.documentElement.style.scrollBehavior='auto';w.scrollTo(0,0);
+  const cycles=[];
+  const percentile=(values,p)=>{const sorted=[...values].sort((a,b)=>a-b);return Number((sorted[Math.min(sorted.length-1,Math.floor(sorted.length*p))]||0).toFixed(2));};
+  function sweep(from,to){
+    return new Promise(resolve=>{
+      let start,last;const gaps=[];
+      function step(now){
+        if(start===undefined)start=now;
+        if(last!==undefined)gaps.push(now-last);last=now;
+        const progress=Math.min(1,(now-start)/900);
+        w.scrollTo(0,from+(to-from)*progress);
+        if(progress<1)requestAnimationFrame(step);else resolve(gaps);
+      }
+      requestAnimationFrame(step);
+    });
+  }
+  for(let cycle=1;cycle<=10;cycle++){
+    status.textContent=` Cycle ${cycle} / 10`;
+    const down=await sweep(0,600),up=await sweep(600,0);
+    // Give the child's final scroll callback one presentation frame to finish.
+    await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
+    const canvas=d.querySelector('.wordmark-flight-canvas'),gaps=[...down,...up];
+    cycles.push({cycle,frames:gaps.length,frameGapP50:percentile(gaps,.5),frameGapP95:percentile(gaps,.95),framesOver50ms:gaps.filter(n=>n>50).length,particleCanvases:d.querySelectorAll('.wordmark-flight-canvas').length,allCanvases:d.querySelectorAll('canvas').length,progress:d.querySelector('[data-header-wordmark]').dataset.flightProgress,renderer:canvas?.dataset.renderer,vertices:canvas?.dataset.vertices,cpuAverageMs:canvas?.dataset.renderMs,gpuBusyFrames:Number(canvas?.dataset.gpuBusyFrames||0)});
+    output.textContent=JSON.stringify(cycles,null,2);
+  }
+  d.documentElement.style.scrollBehavior=oldBehavior;
+  status.textContent=' Complete';button.disabled=false;
+});
+</script></html>

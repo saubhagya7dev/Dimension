@@ -107,7 +107,7 @@ backdrop fades into the page at the bottom of the intro. It pauses offscreen, in
 motion control. Reduced-motion mode keeps it static; mobile uses two curtains.
 The FPV section and popup film retain their existing video behavior.
 
-Orbital animation follows display refresh, renders at the original capped pixel ratio of 1.5,
+Orbital animation targets up to 60 fps, renders at the original capped pixel ratio of 1.5,
 and can reduce its buffer further when rendering is persistently expensive.
 It still pauses offscreen and in reduced-motion mode. Scroll effects cache layout
 on resize/content changes, and the ruler moves with a transform. Original blur-to-sharp
@@ -128,8 +128,11 @@ and settled header portions. They never transfer into a fixed canvas, avoiding
 scroll-thread lag and vertical jitter. Departed letters are clipped away rather
 than faded behind the particles.
 The approved `public/brand/dimension-wordmark.svg` supplies both endpoints and
-the fragment atlas. A separate WebGL2 layer draws all fragments in one instanced
-GPU batch; trajectories and turbulence run in the vertex shader. Canvas sizing
+the fragment atlas. A separate WebGL2 layer draws all fragments in one point-sprite
+GPU batch, with one vertex per fragment. Shared motion curves and fixed drift
+directions are precomputed; wandering paths remain reversible. A GPU fence keeps
+only the newest pending scroll update rather than accumulating queued frames.
+The particle surface stays allocated between transitions. Canvas sizing
 excludes the scrollbar. No idle rendering loop is used. A bounded 2D fallback
 supports devices without WebGL2. Reduced-motion visitors get a simple
 logo handoff without flying particles. Project pages show the header lockup directly.
