@@ -221,11 +221,6 @@ export async function initOrbitalHero(stage: HTMLElement) {
     previousTime = 0;
     renderer.setAnimationLoop(running ? draw : null);
     if (!contextLost && !staticMode) draw(performance.now());
-    const video = stage.querySelector<HTMLVideoElement>('.hero-video');
-    if (video) {
-      if (running) void video.play().catch(() => {});
-      else video.pause();
-    }
   }
   function resize() {
     const bounds = host!.getBoundingClientRect();

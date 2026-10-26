@@ -1,0 +1,14 @@
+/* Soft northern-light curtains: static gradients, compositor-only drift.
+   No video decoder, canvas loop, animated blur, or turbulence filter. */
+.hero-aurora{position:absolute;inset:0;z-index:-4;overflow:hidden;pointer-events:none;background:radial-gradient(ellipse at 45% 15%,#092c2b 0%,#101d23 35%,#111214 75%)}
+.aurora-curtain{position:absolute;left:-15%;top:-25%;width:130%;height:105%;transform-origin:50% 45%;background:radial-gradient(ellipse 65% 75% at 50% 100%,transparent 38%,rgba(70,255,163,.05) 41%,rgba(64,255,174,.57) 44%,rgba(11,221,173,.27) 48%,rgba(16,162,166,.12) 56%,transparent 68%);mask-image:repeating-linear-gradient(91deg,rgba(0,0,0,.5) 0px,#000 3px,rgba(0,0,0,.72) 7px,#000 12px);opacity:.55;will-change:transform;animation:aurora-flow-a 24s ease-in-out infinite alternate}
+.aurora-curtain-b{left:-28%;top:-12%;width:145%;height:95%;opacity:.3;background:radial-gradient(ellipse 58% 80% at 53% 100%,transparent 40%,rgba(65,255,197,.5) 44%,rgba(23,169,186,.19) 53%,transparent 68%);animation:aurora-flow-b 31s ease-in-out infinite alternate}
+.aurora-curtain-c{left:-5%;top:-45%;width:110%;height:130%;opacity:.25;animation:aurora-flow-c 37s ease-in-out infinite alternate}
+.aurora-stars{position:absolute;inset:0;opacity:.25;background-image:radial-gradient(1px 1px at 12% 16%,#d1f7ed 80%,transparent),radial-gradient(1px 1px at 24% 30%,#c2dfed 80%,transparent),radial-gradient(1px 1px at 68% 12%,#dcfff7 80%,transparent),radial-gradient(1px 1px at 83% 22%,#e0f5ff 80%,transparent),radial-gradient(1px 1px at 46% 8%,#d1f7ed 80%,transparent),radial-gradient(1px 1px at 92% 45%,#d1f7ed 80%,transparent);background-size:510px 370px}
+.aurora-curtain{mask-image:linear-gradient(180deg,transparent,#000 18%,#000 70%,transparent),linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent),repeating-linear-gradient(91deg,rgba(0,0,0,.5) 0px,#000 3px,rgba(0,0,0,.72) 7px,#000 12px);mask-composite:intersect,intersect}
+@keyframes aurora-flow-a{from{transform:translate3d(-3%,-2%,0) rotate(-13deg) scaleY(.92)}to{transform:translate3d(3%,4%,0) rotate(7deg) scaleY(1.07)}}
+@keyframes aurora-flow-b{from{transform:translate3d(3%,3%,0) rotate(12deg) scaleY(1.08)}to{transform:translate3d(-4%,-3%,0) rotate(-7deg) scaleY(.9)}}
+@keyframes aurora-flow-c{from{transform:translate3d(0,3%,0) rotate(-22deg)}to{transform:translate3d(5%,-4%,0) rotate(-8deg)}}
+.is-aurora-offscreen .aurora-curtain,.is-aurora-hidden .aurora-curtain,.is-motion-paused .aurora-curtain,.is-motion-suspended .aurora-curtain{animation-play-state:paused}
+@media(max-width:600px){.aurora-curtain{opacity:.4}.aurora-curtain-b{opacity:.25}.aurora-curtain-c{display:none}}
+@media(prefers-reduced-motion:reduce){.aurora-curtain{animation:none;will-change:auto}}

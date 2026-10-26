@@ -1,8 +1,8 @@
 ---
 import { projects } from '../data/projects';
 import { site } from '../data/site';
-import { backgroundVideo } from '../data/media';
 import '../styles/orbital-hero.css';
+import '../styles/aurora.css';
 
 const orbitalProjects = projects.map(project => ({
   image: project.image || '/images/artwork-sheet.webp',
@@ -14,10 +14,7 @@ const disciplines = ['Graphic design', 'FPV cinematics', 'Moving images', 'Photo
 <section id="intro" class="hero orbital-hero tracked-section" data-section-label="Dimension">
   <div class="section-bar"><span>01 / Dimension studio</span><span>Design · Film · Flight</span></div>
   <div class="orbital-stage" data-orbital-stage>
-    <div class="orbital-film" aria-hidden="true">
-      <img src={site.fpvPoster} alt="" fetchpriority="high" width="1672" height="941" />
-      {site.fpvVideo && <video class="hero-video" muted loop playsinline preload="none" poster={site.fpvPoster}><source src={backgroundVideo(site.fpvVideo)} type="video/mp4" /></video>}
-    </div>
+    <div class="hero-aurora" aria-hidden="true"><div class="aurora-stars"></div><div class="aurora-curtain aurora-curtain-a"></div><div class="aurora-curtain aurora-curtain-b"></div><div class="aurora-curtain aurora-curtain-c"></div></div>
     <div class="orbital-world" data-orbital-world data-projects={JSON.stringify(orbitalProjects)} aria-hidden="true"></div>
     <div class="orbital-fallback" aria-hidden="true">
       {projects.slice(0,6).map((project, index) => <div class={`fallback-tile fallback-tile-${index}`} style={project.image ? `background-image:url('${project.image}');background-size:cover` : `background-position:${(project.cell % 3) * 50}% ${Math.floor(project.cell / 3) * 50}%`}></div>)}
@@ -40,6 +37,14 @@ const disciplines = ['Graphic design', 'FPV cinematics', 'Moving images', 'Photo
 <script>
   const stage = document.querySelector<HTMLElement>('[data-orbital-stage]');
   if (stage) {
+    const hero = stage.closest('.orbital-hero');
+    const auroraVisibility = new IntersectionObserver(entries => {
+      hero?.classList.toggle('is-aurora-offscreen', !entries[0]?.isIntersecting);
+    });
+    auroraVisibility.observe(stage);
+    const syncAurora = () => hero?.classList.toggle('is-aurora-hidden', document.hidden);
+    document.addEventListener('visibilitychange', syncAurora);
+    syncAurora();
     // Keep the content independent of the optional 3D renderer.
     // Mobile and reduced-motion visitors retain the static composition.
     const desktop = matchMedia('(min-width: 601px)');

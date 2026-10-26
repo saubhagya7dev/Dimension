@@ -117,8 +117,6 @@ tiltTargets.forEach(target => {
 reducedMotion.addEventListener('change', () => {
   tiltTargets.forEach(target => { target.style.transform = ''; });
   if (parallax) parallax.style.transform = '';
-  // The optional orbital renderer owns background-film playback so that
-  // manual pause, mobile mode and offscreen suspension stay coordinated.
 });
 
 // Filtering uses real buttons and announces the new project count.
@@ -186,4 +184,3 @@ function connectDialog(triggerSelector: string, dialogSelector: string) {
 connectDialog('[data-open-art]', '.art-dialog');
 initFpvFilm();
 void initWordmarkFlight();
-if (reducedMotion.matches) document.querySelectorAll<HTMLVideoElement>('.hero-video').forEach(video => video.pause());
