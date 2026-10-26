@@ -98,6 +98,12 @@ The command never overwrites an existing preview: rename that preview before
 regenerating it. Rebuild after adding the generated file. The current background
 is 9,037,806 bytes versus the 499 MB original (about 98% smaller).
 
+The hero has no video or poster request. Its northern-lights background uses
+three soft green/teal CSS gradient curtains, with only transform animations and
+a static star field. It pauses offscreen, in a hidden tab, or with the hero's
+motion control. Reduced-motion mode keeps it static; mobile uses two curtains.
+The FPV section and popup film retain their existing video behavior.
+
 Orbital animation follows display refresh, renders at the original capped pixel ratio of 1.5,
 and can reduce its buffer further when rendering is persistently expensive.
 It still pauses offscreen and in reduced-motion mode. Scroll effects cache layout
