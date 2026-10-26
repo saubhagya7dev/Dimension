@@ -113,26 +113,24 @@ their existing fonts; the original Dimension wordmark design is preserved.
 On the homepage, scrolling dissolves the large wordmark into white particles and
 reassembles it beside the header symbol. Scrolling upward retraces the same path.
 Breakup advances left to right with an outward dust impulse; arriving fragments
-reassemble into sharp header letters in the same order. During travel the DOM
-wordmarks are completely hidden. A transparent canvas silhouette draws only the
-remaining intact source letters and settled target letters, preventing a faded
-duplicate behind the particles.
-The approved `public/brand/dimension-wordmark.svg` supplies both DOM endpoints
-and native canvas paths. The canvas measures the drawable viewport without the
-scrollbar and uses the same viewBox, image boxes, and clipping as the SVG elements,
-avoiding scale changes at either handoff. Fragment sprites are sampled at the
-SVG's actual aspect ratio, including partial edge cells, rather than replacing
-the shape with a thresholded mask. A fixed decorative 2D canvas draws only on
-scroll/resize updates, with no idle animation loop. Reduced-motion visitors get a simple
+reassemble into sharp header letters in the same order. The intact letters stay
+in the native SVG elements throughout: clip-path reveals only the unbroken source
+and settled header portions. They never transfer into a fixed canvas, avoiding
+scroll-thread lag and vertical jitter. Departed letters are clipped away rather
+than faded behind the particles.
+The approved `public/brand/dimension-wordmark.svg` supplies both endpoints and
+the fragment atlas. A separate WebGL2 layer draws all fragments in one instanced
+GPU batch; trajectories and turbulence run in the vertex shader. Canvas sizing
+excludes the scrollbar. No idle rendering loop is used. A bounded 2D fallback
+supports devices without WebGL2. Reduced-motion visitors get a simple
 logo handoff without flying particles. Project pages show the header lockup directly.
 
 About 30% of fragments use wider, seeded wandering paths; the remainder retain a
 tighter flow. Each fragment launches at its own detachment position. All turbulence
-vanishes at attachment, so reverse scrolling retraces the same paths. One tiny
-warm-white ignition spark appears during the first 7.5% of transition progress,
-with a 7px glow and five fine rays; it is not a recurring idle effect.
+vanishes at attachment, so reverse scrolling retraces the same paths. The ignition
+spark has been removed.
 
-Implementation: `src/scripts/wordmark-flight.ts` and
+Implementation: `src/scripts/wordmark-flight.ts`, `src/scripts/particle-field.ts`, and
 `src/styles/wordmark-flight.css`. Timing starts after 24px of scroll and finishes
 relative to the hero wordmark's measured position. Responsive destinations are
 170px on desktop, 120px on mobile, and 100px on narrow screens.
