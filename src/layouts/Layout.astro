@@ -1,5 +1,6 @@
 ---
 import Brand from '../components/Brand.astro';
+import AuroraBackdrop from '../components/AuroraBackdrop.astro';
 import { site } from '../data/site';
 import '../styles/global.css';
 import '../styles/brand-effects.css';
@@ -32,6 +33,7 @@ const socialImage = Astro.site ? new URL(site.fpvPoster, Astro.site).href : site
     <title>{title}</title>
   </head>
   <body data-home={home}>
+    {home && <AuroraBackdrop />}
     <a class="skip-link" href="#main">Skip to content</a>
     <header class="site-header">
       <div class="header-identity">
