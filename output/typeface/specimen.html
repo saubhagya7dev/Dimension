@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Dimension Display — font specimen</title>
+<style>
+@font-face{font-family:'Dimension Display';src:url('./DimensionDisplay-Bold.woff2') format('woff2');font-weight:700;font-display:block}
+@font-face{font-family:'Dimension TTF Check';src:url('./DimensionDisplay-Bold.ttf') format('truetype');font-weight:700;font-display:block}
+@font-face{font-family:'Dimension OTF Check';src:url('./DimensionDisplay-Bold.otf') format('opentype');font-weight:700;font-display:block}
+*{box-sizing:border-box}body{background:#111214;color:#f2f1ee;font:16px/1.6 Arial,sans-serif;margin:0;padding:40px 5vw}header{border-bottom:1px solid #38393b;padding-bottom:24px;margin-bottom:30px}.meta{font:12px monospace;letter-spacing:.12em;color:#fc4e4e}h1{font:700 clamp(24px,4vw,52px)/1.5 'Dimension Display';margin:24px 0 12px}p{color:#aaa}.alphabet{display:grid;grid-template-columns:repeat(7,1fr);border-left:1px solid #38393b;border-top:1px solid #38393b}.glyph{border-right:1px solid #38393b;border-bottom:1px solid #38393b;min-width:0;padding:18px 8px;text-align:center}.glyph b{font:700 clamp(40px,6vw,84px)/1.6 'Dimension Display';display:block}.glyph small{color:#aaa;font:12px monospace}section{margin:32px 0}h2{font:13px monospace;letter-spacing:.1em;color:#fc4e4e}.sample{font:700 clamp(22px,3.5vw,44px)/1.7 'Dimension Display';overflow-wrap:anywhere}.ttf{font-family:'Dimension TTF Check'}.otf{font-family:'Dimension OTF Check'}input{background:#191a1d;color:#fff;border:1px solid #444;padding:14px;width:100%;font:700 28px/1.5 'Dimension Display'}a{color:#fc4e4e}@media(max-width:650px){.alphabet{grid-template-columns:repeat(4,1fr)}}
+</style>
+<header><div class="meta">DIMENSION / CUSTOM TYPEFACE / VERSION 1.000</div><h1>CREATE BEYOND</h1><p>Compiled font specimen. The portfolio's existing typography has not been changed.</p></header>
+<section><h2>UPPERCASE A–Z / WOFF2</h2><div class="alphabet" id="alphabet"></div></section>
+<section><h2>SPACING AND KERNING</h2><div class="sample">DIMENSION<br>CREATE BEYOND<br>ART FILM FLIGHT<br>AV VA WA TA AY</div></section>
+<section><h2>TYPE A SAMPLE / LOWERCASE KEYS ALSO PRODUCE CAPITALS</h2><input aria-label="Font sample" value="Dimension Creative"></section>
+<section><h2>TTF PARSER CHECK</h2><div class="sample ttf">ABCDEFGHIJKLMNOPQRSTUVWXYZ</div><h2>OTF PARSER CHECK</h2><div class="sample otf">ABCDEFGHIJKLMNOPQRSTUVWXYZ</div></section>
+<p>A–Z, uppercase aliases for lowercase keys, and space. Digits, punctuation and separate lowercase designs are outside this first alphabet.</p>
+<p><a href="./DimensionDisplay-Bold.ttf" download>Download TTF</a> · <a href="./DimensionDisplay-Bold.otf" download>Download OTF</a> · <a href="./DimensionDisplay-Bold.woff2" download>Download WOFF2</a></p>
+<script>document.querySelector('#alphabet').replaceChildren(...Array.from('ABCDEFGHIJKLMNOPQRSTUVWXYZ',letter=>{const cell=document.createElement('div');cell.className='glyph';const glyph=document.createElement('b');glyph.textContent=letter;const label=document.createElement('small');label.textContent=letter;cell.append(glyph,label);return cell;}));</script>
+</html>

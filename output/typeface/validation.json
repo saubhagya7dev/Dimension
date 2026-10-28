@@ -1,0 +1,218 @@
+{
+  "family": "Dimension Display",
+  "style": "Bold",
+  "unitsPerEm": 1000,
+  "capHeight": 700,
+  "glyphs": 28,
+  "characters": "A\u2013Z, lowercase aliases, space",
+  "glyphChecks": [
+    {
+      "letter": "A",
+      "silhouetteIoUAt100px": 0.95094,
+      "ttfOtfRasterSizeDeltaPx": [
+        1,
+        1
+      ]
+    },
+    {
+      "letter": "B",
+      "silhouetteIoUAt100px": 0.98519,
+      "ttfOtfRasterSizeDeltaPx": [
+        1,
+        1
+      ]
+    },
+    {
+      "letter": "C",
+      "silhouetteIoUAt100px": 0.98241,
+      "ttfOtfRasterSizeDeltaPx": [
+        0,
+        0
+      ]
+    },
+    {
+      "letter": "D",
+      "silhouetteIoUAt100px": 0.94552,
+      "ttfOtfRasterSizeDeltaPx": [
+        0,
+        0
+      ]
+    },
+    {
+      "letter": "E",
+      "silhouetteIoUAt100px": 0.98257,
+      "ttfOtfRasterSizeDeltaPx": [
+        0,
+        1
+      ]
+    },
+    {
+      "letter": "F",
+      "silhouetteIoUAt100px": 0.98724,
+      "ttfOtfRasterSizeDeltaPx": [
+        0,
+        1
+      ]
+    },
+    {
+      "letter": "G",
+      "silhouetteIoUAt100px": 0.9724,
+      "ttfOtfRasterSizeDeltaPx": [
+        1,
+        1
+      ]
+    },
+    {
+      "letter": "H",
+      "silhouetteIoUAt100px": 0.99782,
+      "ttfOtfRasterSizeDeltaPx": [
+        0,
+        0
+      ]
+    },
+    {
+      "letter": "I",
+      "silhouetteIoUAt100px": 0.99135,
+      "ttfOtfRasterSizeDeltaPx": [
+        1,
+        1
+      ]
+    },
+    {
+      "letter": "J",
+      "silhouetteIoUAt100px": 0.98799,
+      "ttfOtfRasterSizeDeltaPx": [
+        0,
+        1
+      ]
+    },
+    {
+      "letter": "K",
+      "silhouetteIoUAt100px": 0.96241,
+      "ttfOtfRasterSizeDeltaPx": [
+        0,
+        1
+      ]
+    },
+    {
+      "letter": "L",
+      "silhouetteIoUAt100px": 0.99662,
+      "ttfOtfRasterSizeDeltaPx": [
+        0,
+        0
+      ]
+    },
+    {
+      "letter": "M",
+      "silhouetteIoUAt100px": 0.98776,
+      "ttfOtfRasterSizeDeltaPx": [
+        1,
+        0
+      ]
+    },
+    {
+      "letter": "N",
+      "silhouetteIoUAt100px": 0.97621,
+      "ttfOtfRasterSizeDeltaPx": [
+        1,
+        0
+      ]
+    },
+    {
+      "letter": "O",
+      "silhouetteIoUAt100px": 0.98891,
+      "ttfOtfRasterSizeDeltaPx": [
+        1,
+        0
+      ]
+    },
+    {
+      "letter": "P",
+      "silhouetteIoUAt100px": 0.99745,
+      "ttfOtfRasterSizeDeltaPx": [
+        1,
+        0
+      ]
+    },
+    {
+      "letter": "Q",
+      "silhouetteIoUAt100px": 0.98167,
+      "ttfOtfRasterSizeDeltaPx": [
+        0,
+        0
+      ]
+    },
+    {
+      "letter": "R",
+      "silhouetteIoUAt100px": 0.98233,
+      "ttfOtfRasterSizeDeltaPx": [
+        0,
+        0
+      ]
+    },
+    {
+      "letter": "S",
+      "silhouetteIoUAt100px": 0.94945,
+      "ttfOtfRasterSizeDeltaPx": [
+        1,
+        0
+      ]
+    },
+    {
+      "letter": "T",
+      "silhouetteIoUAt100px": 0.99311,
+      "ttfOtfRasterSizeDeltaPx": [
+        0,
+        0
+      ]
+    },
+    {
+      "letter": "U",
+      "silhouetteIoUAt100px": 0.99493,
+      "ttfOtfRasterSizeDeltaPx": [
+        1,
+        0
+      ]
+    },
+    {
+      "letter": "V",
+      "silhouetteIoUAt100px": 0.96345,
+      "ttfOtfRasterSizeDeltaPx": [
+        0,
+        1
+      ]
+    },
+    {
+      "letter": "W",
+      "silhouetteIoUAt100px": 0.97242,
+      "ttfOtfRasterSizeDeltaPx": [
+        1,
+        1
+      ]
+    },
+    {
+      "letter": "X",
+      "silhouetteIoUAt100px": 0.97805,
+      "ttfOtfRasterSizeDeltaPx": [
+        0,
+        0
+      ]
+    },
+    {
+      "letter": "Y",
+      "silhouetteIoUAt100px": 0.97771,
+      "ttfOtfRasterSizeDeltaPx": [
+        1,
+        0
+      ]
+    },
+    {
+      "letter": "Z",
+      "silhouetteIoUAt100px": 0.98224,
+      "ttfOtfRasterSizeDeltaPx": [
+        0,
+        1
+      ]
+    }
+  ]
+}
