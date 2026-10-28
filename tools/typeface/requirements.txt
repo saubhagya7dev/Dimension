@@ -1,0 +1,4 @@
+fonttools[woff]==4.68.0
+vtracer==0.6.15
+pillow==13.0.0
+numpy==2.5.4
